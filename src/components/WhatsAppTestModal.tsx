@@ -68,7 +68,13 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
   const [hasBrowserBackup, setHasBrowserBackup] = useState<boolean>(false);
   const [isStandaloneMode, setIsStandaloneMode] = useState<boolean>(false);
   const [lanUrls, setLanUrls] = useState<string[]>([]);
-  const [serverUrlInput, setServerUrlInput] = useState<string>(() => getEngineConfig().localServerUrl || 'http://127.0.0.1:3000');
+  const [serverUrlInput, setServerUrlInput] = useState<string>(() => {
+    const cfg = getEngineConfig();
+    if (cfg.mode === 'local_server' && cfg.localServerUrl) {
+      return cfg.localServerUrl;
+    }
+    return '';
+  });
   const [connectingServer, setConnectingServer] = useState<boolean>(false);
   const [serverConnectError, setServerConnectError] = useState<string | null>(null);
   const [pairingPhone, setPairingPhone] = useState<string>('');
@@ -92,6 +98,9 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
   const [webhookApiKey, setWebhookApiKey] = useState(settings.webhookApiKey || '');
   const [contactSaved, setContactSaved] = useState(false);
   const [isSavingContact, setIsSavingContact] = useState(false);
+  const [webhookProviderPreset, setWebhookProviderPreset] = useState<'meta' | 'ultramsg' | 'greenapi' | 'callmebot' | null>(null);
+  const [webhookTestStatus, setWebhookTestStatus] = useState<{ success: boolean; message: string } | null>(null);
+  const [testingWebhook, setTestingWebhook] = useState(false);
 
   // Test Message States
   const [recipientType, setRecipientType] = useState<'admin' | 'admin2' | 'courier' | 'custom'>('admin');
@@ -121,6 +130,10 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
         setCustomPhone(settings.adminPhone);
       }
       setContactSaved(false);
+      setWebhookTestStatus(null);
+      if (settings.webhookUrl && settings.webhookUrl.trim().startsWith('http')) {
+        setActiveTab('contact');
+      }
     }
   }, [isOpen, settings]);
 
@@ -153,10 +166,48 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
         setContactSaved(true);
         setTimeout(() => setContactSaved(false), 3500);
       }
+      return Boolean(data.success);
     } catch (e) {
       console.error('Failed to save whatsapp contact in modal:', e);
+      return false;
     } finally {
       setIsSavingContact(false);
+    }
+  };
+
+  const handleSaveAndTestWebhook = async () => {
+    setWebhookTestStatus(null);
+    const target = adminPhone.trim();
+    if (!target) {
+      setWebhookTestStatus({ success: false, message: 'أدخل رقم واتساب الإدارة (القسم 1) أولاً لتجربة الإرسال.' });
+      return;
+    }
+    if (!webhookUrl.trim().startsWith('http')) {
+      setWebhookTestStatus({ success: false, message: 'أدخل رابط بوابة Webhook / API صحيح يبدأ بـ https://' });
+      return;
+    }
+
+    setTestingWebhook(true);
+    try {
+      await handleSaveContactFromModal({ whatsAppProvider: 'webhook' });
+      const res = await fetch('/api/whatsapp/send-test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipientPhone: target,
+          recipientName: adminName.trim() || 'مشرف العمليات',
+          message: `✅ فحص بوابة الإرسال الآلي (Webhook / API) من نظام متابعة لوكيت — الإرسال يعمل بنجاح بدون باركود!`,
+        }),
+      });
+      const data = await res.json();
+      setWebhookTestStatus({
+        success: Boolean(data.success),
+        message: data.message || (data.success ? 'تم الإرسال بنجاح!' : 'تعذر الإرسال عبر البوابة'),
+      });
+    } catch (err: any) {
+      setWebhookTestStatus({ success: false, message: err?.message || 'فشل الاتصال بالخادم لفحص البوابة' });
+    } finally {
+      setTestingWebhook(false);
     }
   };
 
@@ -780,17 +831,17 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
                       <QrCode className="w-5 h-5" />
                     </div>
                     <div className="text-xs font-bold text-slate-900">
-                      غير متصل بخادم Node لعرض الباركود
+                      التطبيق المثبّت على الهاتف (APK) يعمل بدون خادم محلي
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
-                      لإظهار باركود الواتساب (QR Code)، أدخل رابط السيرفر الشغال (مثل رابط السحابة أو عنوان الكمبيوتر على الشبكة) واضغط اتصال:
+                      محرك باركود الواتساب (Baileys) يحتاج لخادم Node.js شغّال. لإظهار الباركود هنا، أدخل رابط السيرفر السحابي (مثل <span className="font-mono" dir="ltr">https://...onrender.com</span>) أو عنوان الكمبيوتر على نفس الواي فاي (<span className="font-mono" dir="ltr">http://192.168.1.x:3000</span>):
                     </p>
                     <div className="space-y-2 text-right">
                       <input
                         type="url"
                         value={serverUrlInput}
                         onChange={(e) => setServerUrlInput(e.target.value)}
-                        placeholder="https://... أو http://192.168.1.10:3000"
+                        placeholder="https://your-app.onrender.com أو http://192.168.1.10:3000"
                         className="w-full font-mono text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                         dir="ltr"
                       />
@@ -809,7 +860,15 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
                         </div>
                       )}
                     </div>
-                    <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-100">
+                    <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('contact')}
+                        className="w-full px-3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
+                      >
+                        <Globe className="w-3.5 h-3.5" />
+                        <span>إرسال تلقائي عبر Webhook / API (بدون باركود)</span>
+                      </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab('test')}
@@ -1016,16 +1075,108 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
             </div>
 
             {/* WhatsApp Webhook Link */}
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-              <div className="flex items-center justify-between">
+            <div className="p-4 bg-indigo-50/40 rounded-xl border border-indigo-200 space-y-3">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
                   <Globe className="w-4 h-4 text-indigo-600" />
-                  <span>3. رابط الإرسال الآلي (Webhook / Meta WhatsApp Cloud API)</span>
+                  <span>3. بوابة الإرسال الآلي بدون باركود (Webhook / API)</span>
                 </div>
-                <span className="text-[10px] text-indigo-800 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded font-bold">
-                  إرسال تلقائي
+                <span className="text-[10px] text-indigo-800 bg-indigo-100 border border-indigo-200 px-2 py-0.5 rounded font-bold">
+                  بديل الباركود 100%
                 </span>
               </div>
+
+              {/* Quick Provider Presets */}
+              <div className="space-y-1.5">
+                <div className="text-[11px] font-bold text-slate-600">اختر المزوّد لتعبئة صيغة الرابط تلقائياً:</div>
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWebhookProviderPreset('meta');
+                      if (!webhookUrl || webhookUrl.includes('INSTANCE') || webhookUrl.includes('ultramsg') || webhookUrl.includes('green-api') || webhookUrl.includes('callmebot')) {
+                        setWebhookUrl('https://graph.facebook.com/v21.0/YOUR_PHONE_NUMBER_ID/messages');
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${
+                      webhookProviderPreset === 'meta'
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                    }`}
+                  >
+                    Meta Cloud API (رسمي)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWebhookProviderPreset('ultramsg');
+                      if (!webhookUrl || webhookUrl.includes('YOUR_') || webhookUrl.includes('graph.facebook') || webhookUrl.includes('green-api') || webhookUrl.includes('callmebot')) {
+                        setWebhookUrl('https://api.ultramsg.com/YOUR_INSTANCE_ID/messages/chat');
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${
+                      webhookProviderPreset === 'ultramsg'
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                    }`}
+                  >
+                    UltraMsg
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWebhookProviderPreset('greenapi');
+                      if (!webhookUrl || webhookUrl.includes('YOUR_') || webhookUrl.includes('graph.facebook') || webhookUrl.includes('ultramsg') || webhookUrl.includes('callmebot')) {
+                        setWebhookUrl('https://api.green-api.com/waInstanceYOUR_ID/sendMessage/YOUR_TOKEN');
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${
+                      webhookProviderPreset === 'greenapi'
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                    }`}
+                  >
+                    Green-API
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWebhookProviderPreset('callmebot');
+                      if (!webhookUrl || webhookUrl.includes('YOUR_') || webhookUrl.includes('graph.facebook') || webhookUrl.includes('ultramsg') || webhookUrl.includes('green-api')) {
+                        setWebhookUrl('https://api.callmebot.com/whatsapp.php');
+                      }
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${
+                      webhookProviderPreset === 'callmebot'
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                    }`}
+                  >
+                    CallMeBot (مجاني)
+                  </button>
+                </div>
+                {webhookProviderPreset === 'meta' && (
+                  <p className="text-[11px] text-indigo-800 bg-white border border-indigo-200 rounded-lg p-2">
+                    استبدل <code className="font-mono font-bold">YOUR_PHONE_NUMBER_ID</code> برقم معرف الهاتف من Meta Developers وضع الـ Access Token في الخانة الثانية.
+                  </p>
+                )}
+                {webhookProviderPreset === 'ultramsg' && (
+                  <p className="text-[11px] text-indigo-800 bg-white border border-indigo-200 rounded-lg p-2">
+                    استبدل <code className="font-mono font-bold">YOUR_INSTANCE_ID</code> بمعرّف حسابك في UltraMsg (مثل <code className="font-mono">instance12345</code>) وضع الـ Token في الخانة الثانية.
+                  </p>
+                )}
+                {webhookProviderPreset === 'greenapi' && (
+                  <p className="text-[11px] text-indigo-800 bg-white border border-indigo-200 rounded-lg p-2">
+                    استبدل <code className="font-mono font-bold">YOUR_ID</code> و<code className="font-mono font-bold">YOUR_TOKEN</code> من لوحة Green-API (لا يلزم شيء في الخانة الثانية).
+                  </p>
+                )}
+                {webhookProviderPreset === 'callmebot' && (
+                  <p className="text-[11px] text-indigo-800 bg-white border border-indigo-200 rounded-lg p-2">
+                    أبقِ الرابط كما هو وضع مفتاح <code className="font-mono font-bold">APIKEY</code> الذي وصلك من بوت CallMeBot في الخانة الثانية.
+                  </p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <div className="relative">
                   <input
@@ -1043,17 +1194,43 @@ export const WhatsAppTestModal: React.FC<WhatsAppTestModalProps> = ({
                     type="password"
                     value={webhookApiKey}
                     onChange={(e) => setWebhookApiKey(e.target.value)}
-                    placeholder="رمز التوثيق (Meta Access Token أو API Key)"
+                    placeholder="رمز التوثيق (Meta Access Token أو UltraMsg Token أو API Key)"
                     className="w-full font-mono text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none pl-8"
                     dir="ltr"
                   />
                   <Key className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
                 </div>
               </div>
+
+              {webhookTestStatus && (
+                <div
+                  className={`p-2.5 rounded-lg border text-xs font-bold flex items-center gap-2 ${
+                    webhookTestStatus.success
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                      : 'bg-rose-50 border-rose-200 text-rose-900'
+                  }`}
+                >
+                  {webhookTestStatus.success ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                  )}
+                  <span>{webhookTestStatus.message}</span>
+                </div>
+              )}
             </div>
 
-            {/* Save Button */}
-            <div className="flex items-center justify-end gap-2 pt-2">
+            {/* Save & Test Buttons */}
+            <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleSaveAndTestWebhook}
+                disabled={testingWebhook || isSavingContact}
+                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white rounded-xl font-bold flex items-center gap-1.5 transition text-xs shadow-sm"
+              >
+                <Send className={`w-3.5 h-3.5 ${testingWebhook ? 'animate-spin' : ''}`} />
+                <span>{testingWebhook ? 'جاري الفحص...' : 'حفظ وفحص الإرسال عبر البوابة'}</span>
+              </button>
               <button
                 type="button"
                 onClick={() => handleSaveContactFromModal()}

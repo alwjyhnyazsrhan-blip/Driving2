@@ -20,7 +20,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.992Z"
+      "updatedAt": "2026-11-13T21:13:41.306Z"
     },
     {
       "id": "6addf40a8a96f2a1a4067b7f",
@@ -39,10 +39,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 2,
-      "avgDeliveryTimeMinutes": 29,
+      "totalDeliveredToday": 0,
+      "avgDeliveryTimeMinutes": 28,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.992Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad874cf529a50ca50aae8e2",
@@ -64,7 +64,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.992Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872b2529a50ca50aae8e0",
@@ -86,7 +86,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872b0529a50ca50aae8de",
@@ -108,7 +108,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872af529a50ca50aae8dc",
@@ -126,11 +126,11 @@
       "phone": "+966533983104",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 1,
-      "totalDeliveredToday": 15,
+      "activeOrdersCount": 0,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 26,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872ac529a50ca50aae8da",
@@ -152,7 +152,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872a9529a50ca50aae8d8",
@@ -174,7 +174,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.307Z"
     },
     {
       "id": "6ad872a7dc1da1f527990c1d",
@@ -196,7 +196,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.993Z"
+      "updatedAt": "2026-11-13T21:13:41.308Z"
     },
     {
       "id": "6ad872a6dc1da1f527990c1b",
@@ -215,10 +215,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 7,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 23,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.994Z"
+      "updatedAt": "2026-11-13T21:13:41.308Z"
     },
     {
       "id": "6ad872a5dc1da1f527990c19",
@@ -237,10 +237,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 7,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 35,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.994Z"
+      "updatedAt": "2026-11-13T21:13:41.308Z"
     },
     {
       "id": "6ad872a4529a50ca50aae8d6",
@@ -262,7 +262,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.994Z"
+      "updatedAt": "2026-11-13T21:13:41.308Z"
     },
     {
       "id": "6ad872a3529a50ca50aae8d4",
@@ -284,7 +284,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 59,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.994Z"
+      "updatedAt": "2026-11-13T21:13:41.309Z"
     },
     {
       "id": "6ad872a1529a50ca50aae8d2",
@@ -303,10 +303,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 7,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 27,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:01.994Z"
+      "updatedAt": "2026-11-13T21:13:41.309Z"
     },
     {
       "id": "6ad872a0dc1da1f527990c17",
@@ -325,10 +325,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 4,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 32,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.009Z"
+      "updatedAt": "2026-11-13T21:13:41.309Z"
     },
     {
       "id": "6ad8729fdc1da1f527990c15",
@@ -350,7 +350,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.009Z"
+      "updatedAt": "2026-11-13T21:13:41.309Z"
     },
     {
       "id": "6ad8729edc1da1f527990c13",
@@ -372,7 +372,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.009Z"
+      "updatedAt": "2026-11-13T21:13:41.310Z"
     },
     {
       "id": "6ab6319c5b74e69e4650fb76",
@@ -394,7 +394,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.010Z"
+      "updatedAt": "2026-11-13T21:13:41.310Z"
     },
     {
       "id": "6ab631975b74e69e4650fb74",
@@ -416,7 +416,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.010Z"
+      "updatedAt": "2026-11-13T21:13:41.310Z"
     },
     {
       "id": "6ab6318c5b74e69e4650fb72",
@@ -425,7 +425,7 @@
       "lastName": "الجنيدي",
       "idNumber": "2182845053",
       "cityId": "i07AZC3Axw4=",
-      "gift": 1539.648695652143,
+      "gift": 1535.3026086956213,
       "balance": 0,
       "locatAccounts": [
         "30عبد الرواف علي قاسم الجنيدي",
@@ -434,11 +434,11 @@
       "phone": "+966573479604",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 0,
-      "totalDeliveredToday": 7,
+      "activeOrdersCount": 1,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 19,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.010Z"
+      "updatedAt": "2026-11-13T21:13:41.311Z"
     },
     {
       "id": "6aaa6ac238c666d294aa858d",
@@ -460,7 +460,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.011Z"
+      "updatedAt": "2026-11-13T21:13:41.311Z"
     },
     {
       "id": "6a8fe72a4835642e4be2c572",
@@ -479,10 +479,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 9,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 27,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.011Z"
+      "updatedAt": "2026-11-13T21:13:41.312Z"
     },
     {
       "id": "6a8fe5faf02fea3a09f02992",
@@ -504,7 +504,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.012Z"
+      "updatedAt": "2026-11-13T21:13:41.312Z"
     },
     {
       "id": "6a8fe51ef02fea3a09f02990",
@@ -526,7 +526,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.012Z"
+      "updatedAt": "2026-11-13T21:13:41.312Z"
     },
     {
       "id": "6a89c50e6ac8bc0289d4dc62",
@@ -548,7 +548,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.012Z"
+      "updatedAt": "2026-11-13T21:13:41.313Z"
     },
     {
       "id": "6a73524f125fcd6c858b92fe",
@@ -567,10 +567,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 6,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 39,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.013Z"
+      "updatedAt": "2026-11-13T21:13:41.313Z"
     },
     {
       "id": "6a73524e5c72355ebbc9c058",
@@ -589,10 +589,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 16,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 30,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.013Z"
+      "updatedAt": "2026-11-13T21:13:41.314Z"
     },
     {
       "id": "6a73524d125fcd6c858b92fc",
@@ -611,10 +611,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 18,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 28,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.014Z"
+      "updatedAt": "2026-11-13T21:13:41.314Z"
     },
     {
       "id": "6a73524c5c72355ebbc9c056",
@@ -632,11 +632,11 @@
       "phone": "+966533526290",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 1,
-      "totalDeliveredToday": 12,
+      "activeOrdersCount": 0,
+      "totalDeliveredToday": 1,
       "avgDeliveryTimeMinutes": 31,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.014Z"
+      "updatedAt": "2026-11-13T21:13:41.315Z"
     },
     {
       "id": "6a73524b125fcd6c858b92fa",
@@ -645,7 +645,7 @@
       "lastName": "عقلان",
       "idNumber": "2493695692",
       "cityId": "i07AZC3Axw4=",
-      "gift": 2754.848695652117,
+      "gift": 2750.813043478204,
       "balance": 0,
       "locatAccounts": [
         "30 ناظر عبدالفتاح عبدالرحمن عقلان",
@@ -654,11 +654,11 @@
       "phone": "+966504388258",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 0,
-      "totalDeliveredToday": 21,
+      "activeOrdersCount": 1,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.015Z"
+      "updatedAt": "2026-11-13T21:13:41.315Z"
     },
     {
       "id": "6a73524a125fcd6c858b92f8",
@@ -680,7 +680,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 26,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.015Z"
+      "updatedAt": "2026-11-13T21:13:41.316Z"
     },
     {
       "id": "6a735249125fcd6c858b92f6",
@@ -698,11 +698,11 @@
       "phone": "+966505997240",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 1,
-      "totalDeliveredToday": 5,
+      "activeOrdersCount": 0,
+      "totalDeliveredToday": 1,
       "avgDeliveryTimeMinutes": 46,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.016Z"
+      "updatedAt": "2026-11-13T21:13:41.316Z"
     },
     {
       "id": "6a735246125fcd6c858b92f4",
@@ -724,7 +724,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.016Z"
+      "updatedAt": "2026-11-13T21:13:41.317Z"
     },
     {
       "id": "6a7352455c72355ebbc9c054",
@@ -746,7 +746,7 @@
       "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 25,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.017Z"
+      "updatedAt": "2026-11-13T21:13:41.318Z"
     },
     {
       "id": "6a7352445c72355ebbc9c052",
@@ -765,10 +765,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 2,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 33,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.018Z"
+      "updatedAt": "2026-11-13T21:13:41.318Z"
     },
     {
       "id": "6a7352425c72355ebbc9c050",
@@ -787,10 +787,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 14,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 29,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.018Z"
+      "updatedAt": "2026-11-13T21:13:41.319Z"
     },
     {
       "id": "68d159f89639500054145386",
@@ -809,10 +809,10 @@
       "isCustomPhone": false,
       "status": "active",
       "activeOrdersCount": 0,
-      "totalDeliveredToday": 3,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 12,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.019Z"
+      "updatedAt": "2026-11-13T21:13:41.319Z"
     },
     {
       "id": "65333088c865f500544dd62c",
@@ -821,7 +821,7 @@
       "lastName": "السقاف",
       "idNumber": "2180120996",
       "cityId": "i07AZC3Axw4=",
-      "gift": 2534.260869565183,
+      "gift": 2530.22521739127,
       "balance": 0,
       "locatAccounts": [
         "30علي عبدالله محمد السقاف",
@@ -830,14 +830,98 @@
       "phone": "+966508223362",
       "isCustomPhone": false,
       "status": "active",
-      "activeOrdersCount": 0,
-      "totalDeliveredToday": 11,
+      "activeOrdersCount": 1,
+      "totalDeliveredToday": 0,
       "avgDeliveryTimeMinutes": 22,
       "delayedOrdersCount": 0,
-      "updatedAt": "2026-11-13T20:55:02.020Z"
+      "updatedAt": "2026-11-13T21:13:41.320Z"
     }
   ],
   "orders": [
+    {
+      "id": "L23313793",
+      "locateMongoId": "6af77a53a2217d002d2bfc47",
+      "locatAccount": "6ab6318c5b74e69e4650fb72",
+      "courierId": "6ab6318c5b74e69e4650fb72",
+      "courierName": "30عبد الرواف علي قاسم الجنيدي",
+      "courierPhone": "+966573479604",
+      "restaurant": "متجر لوكيت",
+      "customerAddress": "",
+      "customerCoordinates": "26.42, 50.08",
+      "deliveryCost": "14",
+      "paymentMethod": "Card",
+      "pickupTime": "١٢:٠٠ ص",
+      "assignedAt": "2026-11-13T21:00:49.770Z",
+      "createdAt": "2026-11-13T21:00:03.765Z",
+      "isDelivered": false,
+      "isCanceled": false,
+      "elapsedMinutes": 12,
+      "status": "in_transit",
+      "isDelayed": false,
+      "alertSentToCourier": false,
+      "alertSentToAdmin": false,
+      "alertSentToAdmin2": false,
+      "assignmentNotifiedToCourier": true,
+      "assignmentNotifiedTime": "١٢:١٣ ص",
+      "activeOrdersHeldByCourier": 1,
+      "lastUpdated": "2026-11-13T21:13:42.438Z"
+    },
+    {
+      "id": "L23313790",
+      "locateMongoId": "6af77a52979de2002ebbc5e4",
+      "locatAccount": "6a73524b125fcd6c858b92fa",
+      "courierId": "6a73524b125fcd6c858b92fa",
+      "courierName": "30 ناظر عبدالفتاح عبدالرحمن عقلان",
+      "courierPhone": "+966504388258",
+      "restaurant": "متجر لوكيت",
+      "customerAddress": "",
+      "customerCoordinates": "26.42, 50.08",
+      "deliveryCost": "13",
+      "paymentMethod": "Card",
+      "pickupTime": "١٢:٠٠ ص",
+      "assignedAt": "2026-11-13T21:00:11.648Z",
+      "createdAt": "2026-11-13T21:00:02.050Z",
+      "isDelivered": false,
+      "isCanceled": false,
+      "elapsedMinutes": 13,
+      "status": "in_transit",
+      "isDelayed": false,
+      "alertSentToCourier": false,
+      "alertSentToAdmin": false,
+      "alertSentToAdmin2": false,
+      "assignmentNotifiedToCourier": true,
+      "assignmentNotifiedTime": "١٢:١٣ ص",
+      "activeOrdersHeldByCourier": 1,
+      "lastUpdated": "2026-11-13T21:13:42.439Z"
+    },
+    {
+      "id": "L23313694",
+      "locateMongoId": "6af7792ebe2baf002ea1bab8",
+      "locatAccount": "65333088c865f500544dd62c",
+      "courierId": "65333088c865f500544dd62c",
+      "courierName": "30علي عبدالله محمد السقاف",
+      "courierPhone": "+966508223362",
+      "restaurant": "متجر لوكيت",
+      "customerAddress": "",
+      "customerCoordinates": "26.42, 50.08",
+      "deliveryCost": "13",
+      "paymentMethod": "Card",
+      "pickupTime": "١١:٥٥ م",
+      "assignedAt": "2026-11-13T20:55:16.210Z",
+      "createdAt": "2026-11-13T20:55:10.488Z",
+      "isDelivered": false,
+      "isCanceled": false,
+      "elapsedMinutes": 18,
+      "status": "in_transit",
+      "isDelayed": false,
+      "alertSentToCourier": false,
+      "alertSentToAdmin": false,
+      "alertSentToAdmin2": false,
+      "assignmentNotifiedToCourier": true,
+      "assignmentNotifiedTime": "١٢:١٣ ص",
+      "activeOrdersHeldByCourier": 1,
+      "lastUpdated": "2026-11-13T21:13:42.440Z"
+    },
     {
       "id": "L23313545",
       "locateMongoId": "6af776d3d683e6002e4a7f86",
@@ -852,11 +936,12 @@
       "paymentMethod": "Card",
       "pickupTime": "١١:٤٥ م",
       "assignedAt": "2026-11-13T20:45:10.983Z",
+      "deliveryTime": "2026-11-13T20:58:57.018Z",
       "createdAt": "2026-11-13T20:45:07.279Z",
-      "isDelivered": false,
+      "isDelivered": true,
       "isCanceled": false,
-      "elapsedMinutes": 9,
-      "status": "in_transit",
+      "elapsedMinutes": 13,
+      "status": "delivered",
       "isDelayed": false,
       "alertSentToCourier": false,
       "alertSentToAdmin": false,
@@ -864,7 +949,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١١:٥١ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.173Z"
+      "lastUpdated": "2026-11-13T21:13:42.441Z"
     },
     {
       "id": "L23313498",
@@ -880,19 +965,21 @@
       "paymentMethod": "Card",
       "pickupTime": "١١:٤١ م",
       "assignedAt": "2026-11-13T20:41:47.987Z",
+      "deliveryTime": "2026-11-13T21:10:37.506Z",
       "createdAt": "2026-11-13T20:41:43.850Z",
-      "isDelivered": false,
+      "isDelivered": true,
       "isCanceled": false,
-      "elapsedMinutes": 13,
-      "status": "in_transit",
+      "elapsedMinutes": 28,
+      "status": "delivered",
       "isDelayed": false,
-      "alertSentToCourier": false,
+      "alertSentToCourier": true,
       "alertSentToAdmin": false,
       "alertSentToAdmin2": false,
+      "courierAlertTime": "١٢:١٣ ص",
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١١:٥١ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.173Z"
+      "lastUpdated": "2026-11-13T21:13:42.441Z"
     },
     {
       "id": "L23313218",
@@ -908,19 +995,21 @@
       "paymentMethod": "Card",
       "pickupTime": "١١:٢٧ م",
       "assignedAt": "2026-11-13T20:27:32.947Z",
+      "deliveryTime": "2026-11-13T21:09:39.408Z",
       "createdAt": "2026-11-13T20:27:28.948Z",
-      "isDelivered": false,
+      "isDelivered": true,
       "isCanceled": false,
-      "elapsedMinutes": 27,
-      "status": "in_transit",
+      "elapsedMinutes": 42,
+      "status": "delivered",
       "isDelayed": false,
-      "alertSentToCourier": false,
+      "alertSentToCourier": true,
       "alertSentToAdmin": false,
       "alertSentToAdmin2": false,
+      "courierAlertTime": "١٢:١٣ ص",
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١١:٥١ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.173Z"
+      "lastUpdated": "2026-11-13T21:13:42.441Z"
     },
     {
       "id": "L23312790",
@@ -948,7 +1037,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.441Z"
     },
     {
       "id": "L23313124",
@@ -976,7 +1065,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.441Z"
     },
     {
       "id": "L23312728",
@@ -1004,7 +1093,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.442Z"
     },
     {
       "id": "L23312556",
@@ -1032,7 +1121,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.442Z"
     },
     {
       "id": "L23312307",
@@ -1060,7 +1149,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.442Z"
     },
     {
       "id": "L23311009",
@@ -1090,7 +1179,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٤٦ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.174Z"
+      "lastUpdated": "2026-11-13T21:13:42.442Z"
     },
     {
       "id": "L23311934",
@@ -1118,7 +1207,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.442Z"
     },
     {
       "id": "L23311914",
@@ -1148,7 +1237,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٤٤ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23311840",
@@ -1178,7 +1267,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٤٤ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23311833",
@@ -1208,7 +1297,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٤٤ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23311666",
@@ -1237,7 +1326,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٣٠ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23311659",
@@ -1267,7 +1356,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٣١ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.175Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23311526",
@@ -1297,7 +1386,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٢٩ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23310981",
@@ -1326,7 +1415,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٢٩ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.443Z"
     },
     {
       "id": "L23310921",
@@ -1356,7 +1445,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٢٩ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310898",
@@ -1384,7 +1473,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310604",
@@ -1414,7 +1503,7 @@
       "assignmentNotifiedToCourier": true,
       "assignmentNotifiedTime": "١٠:٢٩ م",
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310539",
@@ -1442,7 +1531,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310501",
@@ -1470,7 +1559,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.176Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310394",
@@ -1498,7 +1587,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310376",
@@ -1526,7 +1615,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23310218",
@@ -1554,7 +1643,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23309697",
@@ -1582,7 +1671,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.444Z"
     },
     {
       "id": "L23309647",
@@ -1610,7 +1699,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23308374",
@@ -1638,7 +1727,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23308646",
@@ -1666,7 +1755,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23309278",
@@ -1694,7 +1783,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23309204",
@@ -1722,7 +1811,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.177Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23309045",
@@ -1750,7 +1839,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23307179",
@@ -1778,7 +1867,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23308298",
@@ -1806,7 +1895,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.445Z"
     },
     {
       "id": "L23308286",
@@ -1834,7 +1923,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23308078",
@@ -1862,7 +1951,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23307995",
@@ -1890,7 +1979,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23307956",
@@ -1918,7 +2007,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23306233",
@@ -1946,7 +2035,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23307862",
@@ -1974,7 +2063,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.178Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23307504",
@@ -2003,7 +2092,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23307403",
@@ -2032,7 +2121,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.446Z"
     },
     {
       "id": "L23306715",
@@ -2061,7 +2150,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23307170",
@@ -2090,7 +2179,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23307026",
@@ -2119,7 +2208,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306917",
@@ -2148,7 +2237,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306865",
@@ -2177,7 +2266,7 @@
       "courierAlertTime": "١٠:٢٩ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306274",
@@ -2205,7 +2294,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306212",
@@ -2233,7 +2322,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.179Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306124",
@@ -2261,7 +2350,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.447Z"
     },
     {
       "id": "L23306113",
@@ -2290,7 +2379,7 @@
       "courierAlertTime": "٠٨:٥٣ م",
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23306094",
@@ -2318,7 +2407,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23306066",
@@ -2346,7 +2435,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305956",
@@ -2374,7 +2463,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23304917",
@@ -2402,7 +2491,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305390",
@@ -2430,7 +2519,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305383",
@@ -2458,7 +2547,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305222",
@@ -2486,7 +2575,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.180Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305184",
@@ -2514,7 +2603,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.448Z"
     },
     {
       "id": "L23305153",
@@ -2542,7 +2631,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304994",
@@ -2570,7 +2659,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304542",
@@ -2598,7 +2687,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23303889",
@@ -2626,7 +2715,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304636",
@@ -2654,7 +2743,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.181Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304441",
@@ -2682,7 +2771,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304392",
@@ -2710,7 +2799,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.449Z"
     },
     {
       "id": "L23304191",
@@ -2738,7 +2827,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303140",
@@ -2766,7 +2855,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303857",
@@ -2794,7 +2883,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303846",
@@ -2822,7 +2911,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.182Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303697",
@@ -2850,7 +2939,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303670",
@@ -2878,7 +2967,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303668",
@@ -2906,7 +2995,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.450Z"
     },
     {
       "id": "L23303296",
@@ -2934,7 +3023,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23303182",
@@ -2962,7 +3051,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23303162",
@@ -2990,7 +3079,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23303101",
@@ -3018,7 +3107,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.183Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23302894",
@@ -3046,7 +3135,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23302516",
@@ -3074,7 +3163,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23302285",
@@ -3102,7 +3191,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.451Z"
     },
     {
       "id": "L23302222",
@@ -3130,7 +3219,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23301960",
@@ -3158,7 +3247,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23301948",
@@ -3186,7 +3275,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23301534",
@@ -3214,7 +3303,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.184Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23301509",
@@ -3242,7 +3331,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23301267",
@@ -3270,7 +3359,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.452Z"
     },
     {
       "id": "L23300800",
@@ -3298,7 +3387,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300958",
@@ -3326,7 +3415,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300940",
@@ -3354,7 +3443,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300813",
@@ -3382,7 +3471,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.185Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300765",
@@ -3410,7 +3499,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300715",
@@ -3438,7 +3527,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300597",
@@ -3466,7 +3555,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.453Z"
     },
     {
       "id": "L23300459",
@@ -3494,7 +3583,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23300242",
@@ -3522,7 +3611,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23300223",
@@ -3550,7 +3639,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23300203",
@@ -3578,7 +3667,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23299737",
@@ -3606,7 +3695,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23300110",
@@ -3634,7 +3723,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.186Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23300064",
@@ -3662,7 +3751,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23299780",
@@ -3690,7 +3779,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.454Z"
     },
     {
       "id": "L23299450",
@@ -3718,7 +3807,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299414",
@@ -3746,7 +3835,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299562",
@@ -3774,7 +3863,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299530",
@@ -3802,7 +3891,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299423",
@@ -3830,7 +3919,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299457",
@@ -3858,7 +3947,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23298779",
@@ -3886,7 +3975,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.187Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299239",
@@ -3914,7 +4003,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.455Z"
     },
     {
       "id": "L23299055",
@@ -3942,7 +4031,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298963",
@@ -3970,7 +4059,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298960",
@@ -3998,7 +4087,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298845",
@@ -4026,7 +4115,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298691",
@@ -4054,7 +4143,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298404",
@@ -4082,7 +4171,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23298211",
@@ -4110,7 +4199,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.456Z"
     },
     {
       "id": "L23297886",
@@ -4138,7 +4227,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.188Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297788",
@@ -4166,7 +4255,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297772",
@@ -4194,7 +4283,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297582",
@@ -4222,7 +4311,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297573",
@@ -4250,7 +4339,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297502",
@@ -4278,7 +4367,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297509",
@@ -4306,7 +4395,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.457Z"
     },
     {
       "id": "L23297498",
@@ -4334,7 +4423,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.189Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23297129",
@@ -4362,7 +4451,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296862",
@@ -4390,7 +4479,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296819",
@@ -4418,7 +4507,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296723",
@@ -4446,7 +4535,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296376",
@@ -4474,7 +4563,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296371",
@@ -4502,7 +4591,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23296214",
@@ -4530,7 +4619,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.458Z"
     },
     {
       "id": "L23295934",
@@ -4558,7 +4647,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.190Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295982",
@@ -4586,7 +4675,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295789",
@@ -4614,7 +4703,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295669",
@@ -4642,7 +4731,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295592",
@@ -4670,7 +4759,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295549",
@@ -4698,7 +4787,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295405",
@@ -4726,7 +4815,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295242",
@@ -4754,7 +4843,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.459Z"
     },
     {
       "id": "L23295046",
@@ -4782,7 +4871,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23295004",
@@ -4810,7 +4899,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.191Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294942",
@@ -4838,7 +4927,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294724",
@@ -4866,7 +4955,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294714",
@@ -4894,7 +4983,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294587",
@@ -4922,7 +5011,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294527",
@@ -4950,7 +5039,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294507",
@@ -4978,7 +5067,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.460Z"
     },
     {
       "id": "L23294488",
@@ -5006,7 +5095,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23294201",
@@ -5034,7 +5123,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23294149",
@@ -5062,7 +5151,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.192Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23294111",
@@ -5090,7 +5179,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293839",
@@ -5118,7 +5207,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293829",
@@ -5146,7 +5235,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293751",
@@ -5174,7 +5263,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293530",
@@ -5202,7 +5291,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293064",
@@ -5230,7 +5319,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.461Z"
     },
     {
       "id": "L23293026",
@@ -5258,7 +5347,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.193Z"
+      "lastUpdated": "2026-11-13T21:13:42.462Z"
     },
     {
       "id": "L23292892",
@@ -5286,7 +5375,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.462Z"
     },
     {
       "id": "L23292724",
@@ -5314,7 +5403,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.462Z"
     },
     {
       "id": "L23292554",
@@ -5342,7 +5431,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.462Z"
     },
     {
       "id": "L23292518",
@@ -5370,7 +5459,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23292136",
@@ -5398,7 +5487,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23292338",
@@ -5426,7 +5515,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23292156",
@@ -5454,7 +5543,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23291679",
@@ -5482,7 +5571,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.194Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23291915",
@@ -5510,7 +5599,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23291864",
@@ -5538,7 +5627,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23291835",
@@ -5566,7 +5655,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.463Z"
     },
     {
       "id": "L23291724",
@@ -5594,7 +5683,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291629",
@@ -5622,7 +5711,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291600",
@@ -5650,7 +5739,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291583",
@@ -5678,7 +5767,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291556",
@@ -5706,7 +5795,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291372",
@@ -5734,7 +5823,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.195Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291418",
@@ -5762,7 +5851,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291393",
@@ -5790,7 +5879,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291330",
@@ -5818,7 +5907,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.464Z"
     },
     {
       "id": "L23291164",
@@ -5846,7 +5935,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23291031",
@@ -5874,7 +5963,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23290829",
@@ -5902,7 +5991,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23290768",
@@ -5930,7 +6019,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23290614",
@@ -5958,7 +6047,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.196Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23290387",
@@ -5986,7 +6075,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23289407",
@@ -6014,7 +6103,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.465Z"
     },
     {
       "id": "L23290356",
@@ -6042,7 +6131,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23290174",
@@ -6070,7 +6159,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23290052",
@@ -6098,7 +6187,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23290001",
@@ -6126,7 +6215,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.197Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23289974",
@@ -6154,7 +6243,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.198Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23289937",
@@ -6182,7 +6271,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.198Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23289822",
@@ -6210,7 +6299,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.198Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23289599",
@@ -6238,7 +6327,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.198Z"
+      "lastUpdated": "2026-11-13T21:13:42.466Z"
     },
     {
       "id": "L23289531",
@@ -6266,7 +6355,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.198Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289459",
@@ -6294,7 +6383,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.199Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289495",
@@ -6322,7 +6411,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.199Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289268",
@@ -6350,7 +6439,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.199Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289239",
@@ -6378,7 +6467,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.200Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289229",
@@ -6406,7 +6495,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.200Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289187",
@@ -6434,7 +6523,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.200Z"
+      "lastUpdated": "2026-11-13T21:13:42.467Z"
     },
     {
       "id": "L23289186",
@@ -6462,7 +6551,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.200Z"
+      "lastUpdated": "2026-11-13T21:13:42.468Z"
     },
     {
       "id": "L23288893",
@@ -6490,7 +6579,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.201Z"
+      "lastUpdated": "2026-11-13T21:13:42.468Z"
     },
     {
       "id": "L23288858",
@@ -6518,7 +6607,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.201Z"
+      "lastUpdated": "2026-11-13T21:13:42.468Z"
     },
     {
       "id": "L23288708",
@@ -6546,7 +6635,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.201Z"
+      "lastUpdated": "2026-11-13T21:13:42.468Z"
     },
     {
       "id": "L23288378",
@@ -6574,7 +6663,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.201Z"
+      "lastUpdated": "2026-11-13T21:13:42.468Z"
     },
     {
       "id": "L23288272",
@@ -6602,7 +6691,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.201Z"
+      "lastUpdated": "2026-11-13T21:13:42.469Z"
     },
     {
       "id": "L23288077",
@@ -6630,7 +6719,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.202Z"
+      "lastUpdated": "2026-11-13T21:13:42.469Z"
     },
     {
       "id": "L23287306",
@@ -6658,7 +6747,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.202Z"
+      "lastUpdated": "2026-11-13T21:13:42.469Z"
     },
     {
       "id": "L23287591",
@@ -6686,7 +6775,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.202Z"
+      "lastUpdated": "2026-11-13T21:13:42.469Z"
     },
     {
       "id": "L23287566",
@@ -6714,7 +6803,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.202Z"
+      "lastUpdated": "2026-11-13T21:13:42.469Z"
     },
     {
       "id": "L23287511",
@@ -6742,7 +6831,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.202Z"
+      "lastUpdated": "2026-11-13T21:13:42.470Z"
     },
     {
       "id": "L23287397",
@@ -6770,7 +6859,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.203Z"
+      "lastUpdated": "2026-11-13T21:13:42.470Z"
     },
     {
       "id": "L23287296",
@@ -6798,7 +6887,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.203Z"
+      "lastUpdated": "2026-11-13T21:13:42.470Z"
     },
     {
       "id": "L23287194",
@@ -6826,7 +6915,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.203Z"
+      "lastUpdated": "2026-11-13T21:13:42.470Z"
     },
     {
       "id": "L23287113",
@@ -6854,7 +6943,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.203Z"
+      "lastUpdated": "2026-11-13T21:13:42.470Z"
     },
     {
       "id": "L23286209",
@@ -6882,7 +6971,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.203Z"
+      "lastUpdated": "2026-11-13T21:13:42.471Z"
     },
     {
       "id": "L23287043",
@@ -6910,7 +6999,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.204Z"
+      "lastUpdated": "2026-11-13T21:13:42.471Z"
     },
     {
       "id": "L23286898",
@@ -6938,7 +7027,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.204Z"
+      "lastUpdated": "2026-11-13T21:13:42.471Z"
     },
     {
       "id": "L23286694",
@@ -6966,7 +7055,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.204Z"
+      "lastUpdated": "2026-11-13T21:13:42.471Z"
     },
     {
       "id": "L23286358",
@@ -6994,7 +7083,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.204Z"
+      "lastUpdated": "2026-11-13T21:13:42.471Z"
     },
     {
       "id": "L23286277",
@@ -7022,7 +7111,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.205Z"
+      "lastUpdated": "2026-11-13T21:13:42.472Z"
     },
     {
       "id": "L23286144",
@@ -7050,7 +7139,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.205Z"
+      "lastUpdated": "2026-11-13T21:13:42.472Z"
     },
     {
       "id": "L23286072",
@@ -7078,7 +7167,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.205Z"
+      "lastUpdated": "2026-11-13T21:13:42.472Z"
     },
     {
       "id": "L23286066",
@@ -7106,7 +7195,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.205Z"
+      "lastUpdated": "2026-11-13T21:13:42.472Z"
     },
     {
       "id": "L23286009",
@@ -7134,7 +7223,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.205Z"
+      "lastUpdated": "2026-11-13T21:13:42.472Z"
     },
     {
       "id": "L23285985",
@@ -7162,7 +7251,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.206Z"
+      "lastUpdated": "2026-11-13T21:13:42.473Z"
     },
     {
       "id": "L23285584",
@@ -7190,7 +7279,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.206Z"
+      "lastUpdated": "2026-11-13T21:13:42.473Z"
     },
     {
       "id": "L23285811",
@@ -7218,7 +7307,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.206Z"
+      "lastUpdated": "2026-11-13T21:13:42.473Z"
     },
     {
       "id": "L23285658",
@@ -7246,7 +7335,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.206Z"
+      "lastUpdated": "2026-11-13T21:13:42.473Z"
     },
     {
       "id": "L23285470",
@@ -7274,7 +7363,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.206Z"
+      "lastUpdated": "2026-11-13T21:13:42.474Z"
     },
     {
       "id": "L23285453",
@@ -7302,7 +7391,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.207Z"
+      "lastUpdated": "2026-11-13T21:13:42.474Z"
     },
     {
       "id": "L23285368",
@@ -7330,7 +7419,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.207Z"
+      "lastUpdated": "2026-11-13T21:13:42.474Z"
     },
     {
       "id": "L23285332",
@@ -7358,7 +7447,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.207Z"
+      "lastUpdated": "2026-11-13T21:13:42.474Z"
     },
     {
       "id": "L23284980",
@@ -7386,7 +7475,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.207Z"
+      "lastUpdated": "2026-11-13T21:13:42.474Z"
     },
     {
       "id": "L23284893",
@@ -7414,7 +7503,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.207Z"
+      "lastUpdated": "2026-11-13T21:13:42.475Z"
     },
     {
       "id": "L23284852",
@@ -7442,7 +7531,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.208Z"
+      "lastUpdated": "2026-11-13T21:13:42.475Z"
     },
     {
       "id": "L23284881",
@@ -7470,7 +7559,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.208Z"
+      "lastUpdated": "2026-11-13T21:13:42.475Z"
     },
     {
       "id": "L23284635",
@@ -7498,7 +7587,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.208Z"
+      "lastUpdated": "2026-11-13T21:13:42.475Z"
     },
     {
       "id": "L23284482",
@@ -7526,7 +7615,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.208Z"
+      "lastUpdated": "2026-11-13T21:13:42.475Z"
     },
     {
       "id": "L23284468",
@@ -7554,7 +7643,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.209Z"
+      "lastUpdated": "2026-11-13T21:13:42.476Z"
     },
     {
       "id": "L23284242",
@@ -7582,7 +7671,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.209Z"
+      "lastUpdated": "2026-11-13T21:13:42.476Z"
     },
     {
       "id": "L23284158",
@@ -7610,7 +7699,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.209Z"
+      "lastUpdated": "2026-11-13T21:13:42.476Z"
     },
     {
       "id": "L23283965",
@@ -7638,7 +7727,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.209Z"
+      "lastUpdated": "2026-11-13T21:13:42.476Z"
     },
     {
       "id": "L23283946",
@@ -7666,7 +7755,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.209Z"
+      "lastUpdated": "2026-11-13T21:13:42.476Z"
     },
     {
       "id": "L23283648",
@@ -7694,7 +7783,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.210Z"
+      "lastUpdated": "2026-11-13T21:13:42.477Z"
     },
     {
       "id": "L23283557",
@@ -7722,7 +7811,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.210Z"
+      "lastUpdated": "2026-11-13T21:13:42.477Z"
     },
     {
       "id": "L23283298",
@@ -7750,7 +7839,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.210Z"
+      "lastUpdated": "2026-11-13T21:13:42.477Z"
     },
     {
       "id": "L23282656",
@@ -7778,7 +7867,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.210Z"
+      "lastUpdated": "2026-11-13T21:13:42.477Z"
     },
     {
       "id": "L23283019",
@@ -7806,7 +7895,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.211Z"
+      "lastUpdated": "2026-11-13T21:13:42.478Z"
     },
     {
       "id": "L23282970",
@@ -7834,7 +7923,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.211Z"
+      "lastUpdated": "2026-11-13T21:13:42.478Z"
     },
     {
       "id": "L23282851",
@@ -7862,7 +7951,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.211Z"
+      "lastUpdated": "2026-11-13T21:13:42.478Z"
     },
     {
       "id": "L23282806",
@@ -7890,7 +7979,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.211Z"
+      "lastUpdated": "2026-11-13T21:13:42.478Z"
     },
     {
       "id": "L23282797",
@@ -7918,7 +8007,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.211Z"
+      "lastUpdated": "2026-11-13T21:13:42.478Z"
     },
     {
       "id": "L23282714",
@@ -7946,7 +8035,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.212Z"
+      "lastUpdated": "2026-11-13T21:13:42.479Z"
     },
     {
       "id": "L23282143",
@@ -7974,7 +8063,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.212Z"
+      "lastUpdated": "2026-11-13T21:13:42.479Z"
     },
     {
       "id": "L23281934",
@@ -8002,7 +8091,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.212Z"
+      "lastUpdated": "2026-11-13T21:13:42.479Z"
     },
     {
       "id": "L23281921",
@@ -8030,7 +8119,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.212Z"
+      "lastUpdated": "2026-11-13T21:13:42.479Z"
     },
     {
       "id": "L23281892",
@@ -8058,7 +8147,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.212Z"
+      "lastUpdated": "2026-11-13T21:13:42.480Z"
     },
     {
       "id": "L23281872",
@@ -8086,7 +8175,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.213Z"
+      "lastUpdated": "2026-11-13T21:13:42.480Z"
     },
     {
       "id": "L23281863",
@@ -8114,7 +8203,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.213Z"
+      "lastUpdated": "2026-11-13T21:13:42.480Z"
     },
     {
       "id": "L23280799",
@@ -8142,7 +8231,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.213Z"
+      "lastUpdated": "2026-11-13T21:13:42.480Z"
     },
     {
       "id": "L23281696",
@@ -8170,7 +8259,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.213Z"
+      "lastUpdated": "2026-11-13T21:13:42.480Z"
     },
     {
       "id": "L23281586",
@@ -8198,7 +8287,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.213Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23281516",
@@ -8226,7 +8315,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.214Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23281480",
@@ -8254,7 +8343,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.214Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23281335",
@@ -8282,7 +8371,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.214Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23281290",
@@ -8310,7 +8399,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.214Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23281096",
@@ -8338,7 +8427,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.214Z"
+      "lastUpdated": "2026-11-13T21:13:42.481Z"
     },
     {
       "id": "L23280899",
@@ -8366,7 +8455,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.215Z"
+      "lastUpdated": "2026-11-13T21:13:42.482Z"
     },
     {
       "id": "L23280822",
@@ -8394,7 +8483,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.215Z"
+      "lastUpdated": "2026-11-13T21:13:42.482Z"
     },
     {
       "id": "L23280787",
@@ -8422,7 +8511,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.215Z"
+      "lastUpdated": "2026-11-13T21:13:42.482Z"
     },
     {
       "id": "L23280756",
@@ -8450,7 +8539,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.215Z"
+      "lastUpdated": "2026-11-13T21:13:42.482Z"
     },
     {
       "id": "L23280677",
@@ -8478,7 +8567,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.215Z"
+      "lastUpdated": "2026-11-13T21:13:42.482Z"
     },
     {
       "id": "L23280545",
@@ -8506,7 +8595,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.216Z"
+      "lastUpdated": "2026-11-13T21:13:42.483Z"
     },
     {
       "id": "L23280554",
@@ -8534,7 +8623,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.216Z"
+      "lastUpdated": "2026-11-13T21:13:42.483Z"
     },
     {
       "id": "L23280549",
@@ -8562,7 +8651,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.216Z"
+      "lastUpdated": "2026-11-13T21:13:42.483Z"
     },
     {
       "id": "L23280235",
@@ -8590,7 +8679,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.216Z"
+      "lastUpdated": "2026-11-13T21:13:42.483Z"
     },
     {
       "id": "L23280249",
@@ -8618,7 +8707,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.216Z"
+      "lastUpdated": "2026-11-13T21:13:42.483Z"
     },
     {
       "id": "L23280209",
@@ -8646,7 +8735,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.217Z"
+      "lastUpdated": "2026-11-13T21:13:42.484Z"
     },
     {
       "id": "L23280071",
@@ -8674,7 +8763,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.217Z"
+      "lastUpdated": "2026-11-13T21:13:42.484Z"
     },
     {
       "id": "L23279822",
@@ -8702,7 +8791,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.217Z"
+      "lastUpdated": "2026-11-13T21:13:42.484Z"
     },
     {
       "id": "L23279479",
@@ -8730,7 +8819,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.217Z"
+      "lastUpdated": "2026-11-13T21:13:42.484Z"
     },
     {
       "id": "L23279406",
@@ -8758,7 +8847,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.217Z"
+      "lastUpdated": "2026-11-13T21:13:42.484Z"
     },
     {
       "id": "L23279334",
@@ -8786,7 +8875,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.218Z"
+      "lastUpdated": "2026-11-13T21:13:42.485Z"
     },
     {
       "id": "L23279297",
@@ -8814,7 +8903,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.218Z"
+      "lastUpdated": "2026-11-13T21:13:42.485Z"
     },
     {
       "id": "L23279236",
@@ -8842,7 +8931,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.218Z"
+      "lastUpdated": "2026-11-13T21:13:42.485Z"
     },
     {
       "id": "L23279145",
@@ -8870,7 +8959,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.218Z"
+      "lastUpdated": "2026-11-13T21:13:42.485Z"
     },
     {
       "id": "L23279125",
@@ -8889,7 +8978,7 @@
       "createdAt": "2026-11-12T13:30:04.968Z",
       "isDelivered": false,
       "isCanceled": true,
-      "elapsedMinutes": 1884,
+      "elapsedMinutes": 1903,
       "status": "cancelled",
       "isDelayed": false,
       "alertSentToCourier": false,
@@ -8897,7 +8986,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.218Z"
+      "lastUpdated": "2026-11-13T21:13:42.486Z"
     },
     {
       "id": "L23279110",
@@ -8925,7 +9014,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.219Z"
+      "lastUpdated": "2026-11-13T21:13:42.486Z"
     },
     {
       "id": "L23278859",
@@ -8953,7 +9042,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.219Z"
+      "lastUpdated": "2026-11-13T21:13:42.486Z"
     },
     {
       "id": "L23278856",
@@ -8981,7 +9070,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.219Z"
+      "lastUpdated": "2026-11-13T21:13:42.486Z"
     },
     {
       "id": "L23278765",
@@ -9009,7 +9098,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.220Z"
+      "lastUpdated": "2026-11-13T21:13:42.486Z"
     },
     {
       "id": "L23278642",
@@ -9037,7 +9126,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.220Z"
+      "lastUpdated": "2026-11-13T21:13:42.487Z"
     },
     {
       "id": "L23278533",
@@ -9065,7 +9154,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.220Z"
+      "lastUpdated": "2026-11-13T21:13:42.487Z"
     },
     {
       "id": "L23278375",
@@ -9093,7 +9182,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.220Z"
+      "lastUpdated": "2026-11-13T21:13:42.487Z"
     },
     {
       "id": "L23278342",
@@ -9121,7 +9210,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.220Z"
+      "lastUpdated": "2026-11-13T21:13:42.487Z"
     },
     {
       "id": "L23278334",
@@ -9149,7 +9238,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.221Z"
+      "lastUpdated": "2026-11-13T21:13:42.487Z"
     },
     {
       "id": "L23278292",
@@ -9177,91 +9266,7 @@
       "alertSentToAdmin2": false,
       "assignmentNotifiedToCourier": false,
       "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.221Z"
-    },
-    {
-      "id": "L23278180",
-      "locateMongoId": "6af5adc66078b7002d7236ab",
-      "locatAccount": "6a73524c5c72355ebbc9c056",
-      "courierId": "6a73524c5c72355ebbc9c056",
-      "courierName": "30 مصطفى ابراهيم احمد ونس",
-      "courierPhone": "+966533526290",
-      "restaurant": "متجر لوكيت",
-      "customerAddress": "",
-      "customerCoordinates": "26.42, 50.08",
-      "deliveryCost": "13",
-      "paymentMethod": "Card",
-      "pickupTime": "٠٣:١٥ م",
-      "assignedAt": "2026-11-12T12:15:26.843Z",
-      "deliveryTime": "2026-11-12T12:27:57.125Z",
-      "createdAt": "2026-11-12T12:15:02.033Z",
-      "isDelivered": true,
-      "isCanceled": false,
-      "elapsedMinutes": 12,
-      "status": "delivered",
-      "isDelayed": false,
-      "alertSentToCourier": false,
-      "alertSentToAdmin": false,
-      "alertSentToAdmin2": false,
-      "assignmentNotifiedToCourier": false,
-      "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.221Z"
-    },
-    {
-      "id": "L23278150",
-      "locateMongoId": "6af5ad1edfef73002d10073f",
-      "locatAccount": "6addf40a8a96f2a1a4067b7f",
-      "courierId": "6addf40a8a96f2a1a4067b7f",
-      "courierName": "30مد اعرفان -",
-      "courierPhone": "+966572722400",
-      "restaurant": "متجر لوكيت",
-      "customerAddress": "",
-      "customerCoordinates": "26.42, 50.08",
-      "deliveryCost": "15",
-      "paymentMethod": "Card",
-      "pickupTime": "٠٣:١٢ م",
-      "assignedAt": "2026-11-12T12:12:41.943Z",
-      "deliveryTime": "2026-11-12T13:03:01.596Z",
-      "createdAt": "2026-11-12T12:12:14.509Z",
-      "isDelivered": true,
-      "isCanceled": false,
-      "elapsedMinutes": 50,
-      "status": "delivered",
-      "isDelayed": false,
-      "alertSentToCourier": false,
-      "alertSentToAdmin": false,
-      "alertSentToAdmin2": false,
-      "assignmentNotifiedToCourier": false,
-      "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.222Z"
-    },
-    {
-      "id": "L23278143",
-      "locateMongoId": "6af5acf66078b7002d723648",
-      "locatAccount": "6a73524e5c72355ebbc9c058",
-      "courierId": "6a73524e5c72355ebbc9c058",
-      "courierName": "30 وليد احمد فائد العنسي",
-      "courierPhone": "+966502445396",
-      "restaurant": "متجر لوكيت",
-      "customerAddress": "",
-      "customerCoordinates": "26.42, 50.08",
-      "deliveryCost": "16",
-      "paymentMethod": "Points",
-      "pickupTime": "٠٣:١١ م",
-      "assignedAt": "2026-11-12T12:11:41.461Z",
-      "deliveryTime": "2026-11-12T12:45:56.568Z",
-      "createdAt": "2026-11-12T12:11:34.648Z",
-      "isDelivered": true,
-      "isCanceled": false,
-      "elapsedMinutes": 34,
-      "status": "delivered",
-      "isDelayed": false,
-      "alertSentToCourier": false,
-      "alertSentToAdmin": false,
-      "alertSentToAdmin2": false,
-      "assignmentNotifiedToCourier": false,
-      "activeOrdersHeldByCourier": 1,
-      "lastUpdated": "2026-11-13T20:55:03.222Z"
+      "lastUpdated": "2026-11-13T21:13:42.488Z"
     }
   ],
   "alerts": [
@@ -9672,7 +9677,7 @@
     "locateCompanyId": "6a672b5fe5e1cb002e48c259",
     "locateAccessToken": "eyJhbGciOiJIUzI1NiJ9.NmE2NzJjMDhkNWE4YmIwMDJlNDM5MTAw.z8rAI9NB3MXza0XcGXrm4581RJ4tRf6Ll28d_rgGt2Y",
     "enableCloudAutoSync": true,
-    "lastCloudSyncTimestamp": "2026-11-13T20:55:03.317Z",
+    "lastCloudSyncTimestamp": "2026-11-13T21:13:42.605Z",
     "lastCloudSyncCount": 300
   },
   "customCourierPhones": {},

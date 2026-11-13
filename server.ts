@@ -598,53 +598,82 @@ function setupRenderKeepAliveRunner() {
   }, 9 * 60 * 1000);
 }
 
-// Helper: Send Direct WhatsApp Message via Baileys and/or Webhook URL (with wa.me link fallback)
+// Helper: Send Direct WhatsApp Message via Webhook/API Gateway and/or Baileys (with wa.me link fallback)
 async function sendWhatsAppDirect(phone: string, text: string): Promise<{ success: boolean; method: string; waLink: string; error?: string }> {
   const cleanPhone = formatPhoneForWhatsApp(phone);
   const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  let webhookError: string | undefined;
 
-  // 1. If custom WhatsApp Webhook URL / Meta Cloud API is configured, forward message to it
+  // 1. If custom WhatsApp Webhook URL / Meta Cloud API / UltraMsg / Green-API / CallMeBot is configured, send via it
   if (settings.webhookUrl && typeof settings.webhookUrl === 'string' && settings.webhookUrl.trim().startsWith('http')) {
     const targetUrl = settings.webhookUrl.trim();
     const isMetaCloudApi = targetUrl.includes('graph.facebook.com');
+    const isUltraMsg = targetUrl.includes('ultramsg.com');
+    const isCallMeBot = targetUrl.includes('callmebot.com');
+    const apiKey = (settings.webhookApiKey || '').trim();
+
     try {
-      const webhookHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
-      if (settings.webhookApiKey) {
-        webhookHeaders['Authorization'] = `Bearer ${settings.webhookApiKey}`;
-        if (!isMetaCloudApi) {
-          webhookHeaders['x-api-key'] = settings.webhookApiKey;
+      if (isCallMeBot) {
+        const sep = targetUrl.includes('?') ? '&' : '?';
+        const cmbUrl = `${targetUrl}${sep}phone=${encodeURIComponent(cleanPhone)}&text=${encodeURIComponent(text)}${apiKey ? `&apikey=${encodeURIComponent(apiKey)}` : ''}`;
+        const cmbRes = await fetch(cmbUrl, { method: 'GET' });
+        if (cmbRes.ok) {
+          console.log(`[WhatsApp Webhook] ✅ تم الإرسال عبر CallMeBot إلى ${cleanPhone}`);
+          return { success: true, method: 'webhook_gateway', waLink };
         }
-      }
-      const webhookPayload = isMetaCloudApi
-        ? {
-            messaging_product: 'whatsapp',
-            recipient_type: 'individual',
-            to: cleanPhone,
-            type: 'text',
-            text: { preview_url: false, body: text },
+        webhookError = `HTTP ${cmbRes.status}`;
+      } else {
+        const webhookHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+        if (apiKey) {
+          webhookHeaders['Authorization'] = `Bearer ${apiKey}`;
+          if (!isMetaCloudApi && !isUltraMsg) {
+            webhookHeaders['x-api-key'] = apiKey;
           }
-        : {
-            phone: cleanPhone,
-            to: cleanPhone,
-            number: cleanPhone,
-            chatId: `${cleanPhone}@c.us`,
-            message: text,
-            body: text,
-            text: text,
-            timestamp: new Date().toISOString(),
-            riyadhTime: getRiyadhTimeString(),
-            apiKey: settings.webhookApiKey || undefined,
-          };
-      fetch(targetUrl, {
-        method: 'POST',
-        headers: webhookHeaders,
-        body: JSON.stringify(webhookPayload),
-      }).catch((wErr) => {
-        console.warn(`[WhatsApp Webhook Forward Warning] ${wErr?.message}`);
-      });
-      console.log(`[WhatsApp Webhook] 🚀 تم توجيه التنبيه إلى رابط الإرسال الآلي: ${targetUrl}`);
+        }
+        const webhookPayload = isMetaCloudApi
+          ? {
+              messaging_product: 'whatsapp',
+              recipient_type: 'individual',
+              to: cleanPhone,
+              type: 'text',
+              text: { preview_url: false, body: text },
+            }
+          : isUltraMsg
+          ? {
+              token: apiKey,
+              to: `+${cleanPhone}`,
+              body: text,
+            }
+          : {
+              phone: cleanPhone,
+              to: cleanPhone,
+              number: cleanPhone,
+              chatId: `${cleanPhone}@c.us`,
+              message: text,
+              body: text,
+              text: text,
+              token: apiKey || undefined,
+              timestamp: new Date().toISOString(),
+              riyadhTime: getRiyadhTimeString(),
+              apiKey: apiKey || undefined,
+            };
+
+        const webhookRes = await fetch(targetUrl, {
+          method: 'POST',
+          headers: webhookHeaders,
+          body: JSON.stringify(webhookPayload),
+        });
+        if (webhookRes.ok) {
+          console.log(`[WhatsApp Webhook] ✅ تم إرسال التنبيه آلياً عبر بوابة الواتساب: ${targetUrl}`);
+          return { success: true, method: isMetaCloudApi ? 'meta_cloud_api' : 'webhook_gateway', waLink };
+        }
+        const errBody = await webhookRes.text().catch(() => '');
+        webhookError = errBody || `HTTP ${webhookRes.status}`;
+        console.warn(`[WhatsApp Webhook Warning] ${webhookError}`);
+      }
     } catch (err: any) {
-      console.warn(`[WhatsApp Webhook Error] ${err?.message}`);
+      webhookError = err?.message || 'تعذر الاتصال ببوابة Webhook';
+      console.warn(`[WhatsApp Webhook Error] ${webhookError}`);
     }
   }
 
@@ -659,6 +688,8 @@ async function sendWhatsAppDirect(phone: string, text: string): Promise<{ succes
       console.warn(`[Baileys Direct] تعذر الإرسال المباشر (${err?.message})، يتم استخدام رابط wa.me الاحتياطي`);
       return { success: true, method: 'direct_link_fallback', waLink, error: err?.message };
     }
+  } else if (webhookError) {
+    return { success: false, method: 'webhook_error', waLink, error: webhookError };
   } else {
     return { success: true, method: 'direct_link_fallback', waLink };
   }
@@ -2179,12 +2210,17 @@ app.post('/api/whatsapp/send-test', async (req: Request, res: Response) => {
   const cleanPhone = formatPhoneForWhatsApp(recipientPhone);
   const textToSend = message || `مرحباً ${recipientName}،\nرسالة فحص مباشر من نظام أتمتة ومتابعة لوكيت.\nالتوقيت: ${getRiyadhTimeString()}\n✅ الربط يعمل ومستقر على السيرفر.`;
   const sendRes = await sendWhatsAppDirect(cleanPhone, textToSend);
+  const isWebhookSuccess = sendRes.method === 'meta_cloud_api' || sendRes.method === 'webhook_gateway';
 
   res.json({
-    success: true,
+    success: sendRes.success,
     message: sendRes.method === 'baileys_direct'
       ? 'تم إرسال رسالة الفحص آلياً عبر جلسة Baileys على الواتساب بنجاح!'
-      : 'تم تجهيز رابط الإرسال المباشر (wa.me) لعدم اكتمال ربط جلسة Baileys بعد',
+      : isWebhookSuccess
+      ? 'تم إرسال رسالة الفحص آلياً عبر بوابة الـ Webhook / API بنجاح!'
+      : sendRes.method === 'webhook_error'
+      ? `فشل الإرسال عبر بوابة الـ Webhook: ${sendRes.error || 'تحقق من الرابط والمفتاح'}`
+      : 'تم تجهيز رابط الإرسال المباشر (wa.me) لعدم اكتمال ربط جلسة Baileys أو Webhook بعد',
     details: sendRes,
     textSent: textToSend,
     recipientPhone: cleanPhone,

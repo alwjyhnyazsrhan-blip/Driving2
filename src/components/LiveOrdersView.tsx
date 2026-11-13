@@ -228,8 +228,8 @@ export const LiveOrdersView: React.FC<LiveOrdersViewProps> = ({
         </div>
       )}
 
-      {/* Inline WhatsApp QR Code Banner when WhatsApp is not yet connected */}
-      {!whatsappState?.isLoggedIn && !hideQrBanner && (
+      {/* Inline WhatsApp QR Code Banner when neither Baileys nor Webhook API is connected */}
+      {!whatsappState?.isLoggedIn && !(settings.webhookUrl && settings.webhookUrl.trim().startsWith('http')) && !hideQrBanner && (
         <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
           <div className="flex items-center gap-4">
             {whatsappState?.qrDataUrl ? (

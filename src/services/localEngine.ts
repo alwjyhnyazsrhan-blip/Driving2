@@ -490,16 +490,31 @@ async function dispatchWhatsAppStandalone(phone: string, text: string): Promise<
   const cleanPhone = formatPhoneForWhatsApp(phone);
   const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
 
-  // 1. Forward to Webhook URL / Meta WhatsApp Cloud API if configured
+  // 1. Forward to Webhook URL / Meta WhatsApp Cloud API / UltraMsg / Green-API / CallMeBot if configured
   if (dbState.settings.webhookUrl && dbState.settings.webhookUrl.trim().startsWith('http')) {
     const targetUrl = dbState.settings.webhookUrl.trim();
     const isMetaCloudApi = targetUrl.includes('graph.facebook.com');
+    const isUltraMsg = targetUrl.includes('ultramsg.com');
+    const isCallMeBot = targetUrl.includes('callmebot.com');
+    const apiKey = (dbState.settings.webhookApiKey || '').trim();
+
     try {
+      if (isCallMeBot) {
+        const sep = targetUrl.includes('?') ? '&' : '?';
+        const cmbUrl = `${targetUrl}${sep}phone=${encodeURIComponent(cleanPhone)}&text=${encodeURIComponent(text)}${apiKey ? `&apikey=${encodeURIComponent(apiKey)}` : ''}`;
+        const res = await fetch(cmbUrl, { method: 'GET' });
+        if (res.ok) {
+          return { success: true, method: 'webhook_gateway', waLink };
+        }
+        const errText = await res.text().catch(() => '');
+        return { success: false, method: 'webhook_error', waLink, error: errText || `HTTP ${res.status}` };
+      }
+
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-      if (dbState.settings.webhookApiKey) {
-        headers['Authorization'] = `Bearer ${dbState.settings.webhookApiKey}`;
-        if (!isMetaCloudApi) {
-          headers['x-api-key'] = dbState.settings.webhookApiKey;
+      if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+        if (!isMetaCloudApi && !isUltraMsg) {
+          headers['x-api-key'] = apiKey;
         }
       }
       const payload = isMetaCloudApi
@@ -510,6 +525,12 @@ async function dispatchWhatsAppStandalone(phone: string, text: string): Promise<
             type: 'text',
             text: { preview_url: false, body: text },
           }
+        : isUltraMsg
+        ? {
+            token: apiKey,
+            to: `+${cleanPhone}`,
+            body: text,
+          }
         : {
             phone: cleanPhone,
             to: cleanPhone,
@@ -518,6 +539,8 @@ async function dispatchWhatsAppStandalone(phone: string, text: string): Promise<
             message: text,
             body: text,
             text,
+            token: apiKey || undefined,
+            apiKey: apiKey || undefined,
             timestamp: new Date().toISOString(),
             riyadhTime: getRiyadhTimeString(),
           };
@@ -1764,12 +1787,15 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
   if (pathname === '/api/whatsapp/send-test' && upperMethod === 'POST') {
     const phone = String(body?.recipientPhone || '');
     const name = String(body?.recipientName || 'مشرف العمليات');
-    const msg = body?.message || `مرحباً ${name}، رسالة فحص مباشر من التطبيق المستقل لمتابعة لوكيت (${getRiyadhTimeString()}).`;
+    const msg = body?.message || `مرحباً ${name}، رسالة فحص مباشر من نظام متابعة لوكيت (${getRiyadhTimeString()}).`;
     const res = await dispatchWhatsAppStandalone(phone, msg);
+    const isWebhookSuccess = res.method === 'webhook_gateway' || res.method === 'meta_cloud_api';
     return jsonResp({
-      success: true,
-      message: res.method === 'webhook_gateway'
-        ? 'تم إرسال رسالة الفحص عبر بوابة الـ Webhook!'
+      success: res.success,
+      message: isWebhookSuccess
+        ? 'تم إرسال رسالة الفحص آلياً عبر بوابة الـ Webhook / API بنجاح!'
+        : res.method === 'webhook_error'
+        ? `فشل الإرسال عبر بوابة الـ Webhook: ${res.error || 'تحقق من صحة الرابط والمفتاح'}`
         : 'تم تجهيز رابط الواتساب المباشر (wa.me) وإشعار المتصفح بنجاح.',
       details: res,
       textSent: msg,

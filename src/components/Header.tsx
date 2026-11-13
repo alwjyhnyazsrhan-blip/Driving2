@@ -138,17 +138,17 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* WhatsApp Session / QR Button */}
+            {/* WhatsApp Session / Webhook / QR Button */}
             {onOpenWhatsApp && (
               <button
                 type="button"
                 onClick={onOpenWhatsApp}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs border ${
-                  whatsappState?.isLoggedIn
+                  whatsappState?.isLoggedIn || Boolean(settings.webhookUrl && settings.webhookUrl.trim().startsWith('http'))
                     ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'
                     : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-300'
                 }`}
-                title="اضغط لفتح شاشة ربط جلسة الواتساب ورمز الـ QR"
+                title="اضغط لإدارة ربط الواتساب (بوابة Webhook / API أو QR)"
               >
                 <QrCode className="w-3.5 h-3.5 text-emerald-600" />
                 <span>واتساب:</span>
@@ -159,10 +159,15 @@ export const Header: React.FC<HeaderProps> = ({
                       +{whatsappState.userPhone || 'متصل'}
                     </span>
                   </span>
+                ) : settings.webhookUrl && settings.webhookUrl.trim().startsWith('http') ? (
+                  <span className="flex items-center gap-1 text-emerald-900">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>بوابة API آلية</span>
+                  </span>
                 ) : (
                   <span className="flex items-center gap-1 text-amber-900">
                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    <span>امسح الـ QR</span>
+                    <span>امسح الـ QR / أو Webhook</span>
                   </span>
                 )}
               </button>
