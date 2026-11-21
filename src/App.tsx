@@ -13,9 +13,9 @@ import { QuickWhatsAppModal } from './components/QuickWhatsAppModal';
 import { GuideWalkthroughModal } from './components/GuideWalkthroughModal';
 import { CourierPortalView } from './components/CourierPortalView';
 import { OfflineIndicator } from './components/OfflineIndicator';
-import { getEngineConfig, subscribeEngineConfig } from './services/apiBridge';
+import { getEngineConfig, subscribeEngineConfig, setAdminAuthToken } from './services/apiBridge';
 import { Order, Courier, SystemSettings, AlertLog, WhatsAppConnectionState, CloudSyncState } from './types';
-import { Bell, CheckCircle2, AlertTriangle, X } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, X, Lock, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
 
 function isCourierPortalUrl(): boolean {
   if (typeof window === 'undefined') return false;
@@ -32,7 +32,20 @@ function isCourierPortalUrl(): boolean {
   );
 }
 
-function AdminDashboardApp() {
+function hasAdminQueryParam(): boolean {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  const adminParam = params.get('admin');
+  return adminParam === '1' || adminParam === 'true';
+}
+
+interface AdminDashboardAppProps {
+  adminAuthStatus: { isLocked: boolean; hideAdminFromRoot: boolean };
+  onConfigureAdminLock: (payload: { password?: string; hideAdminFromRoot?: boolean; clear?: boolean }) => Promise<boolean>;
+  onAdminLogout: () => void;
+}
+
+function AdminDashboardApp({ adminAuthStatus, onConfigureAdminLock, onAdminLogout }: AdminDashboardAppProps) {
   const [currentTab, setCurrentTab] = useState<'orders' | 'couriers' | 'alerts' | 'report' | 'automation'>('orders');
   
   // Data states (clean initial state, filled only with real data from backend/Locat)
@@ -86,8 +99,14 @@ function AdminDashboardApp() {
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setIsSyncing(true);
     try {
-      const [settingsRes, couriersRes, ordersRes, alertsRes, waRes, cloudRes] = await Promise.all([
-        fetch('/api/settings').then((r) => r.json()).catch(() => ({ success: false })),
+      const settingsHttp = await fetch('/api/settings');
+      if (settingsHttp.status === 401) {
+        onAdminLogout();
+        return;
+      }
+      const settingsRes = await settingsHttp.json().catch(() => ({ success: false }));
+
+      const [couriersRes, ordersRes, alertsRes, waRes, cloudRes] = await Promise.all([
         fetch('/api/couriers').then((r) => r.json()).catch(() => ({ success: false })),
         fetch('/api/orders').then((r) => r.json()).catch(() => ({ success: false })),
         fetch('/api/alerts').then((r) => r.json()).catch(() => ({ success: false })),
@@ -141,7 +160,7 @@ function AdminDashboardApp() {
     } finally {
       if (!silent) setIsSyncing(false);
     }
-  }, []);
+  }, [onAdminLogout]);
 
   const handleTriggerCloudSync = async () => {
     setIsSyncing(true);
@@ -527,6 +546,8 @@ function AdminDashboardApp() {
         whatsappState={whatsappState}
         cloudSyncState={cloudSyncState}
         onOpenGuide={() => setIsGuideOpen(true)}
+        adminAuthStatus={adminAuthStatus}
+        onAdminLogout={onAdminLogout}
       />
 
       {/* Main Content Area */}
@@ -567,6 +588,21 @@ function AdminDashboardApp() {
             }}
             onUpdateCourierPhone={handleUpdateCourierPhone}
             onSetCourierPassword={handleSetCourierPassword}
+            adminAuthStatus={adminAuthStatus}
+            onConfigureAdminLock={async (payload) => {
+              const ok = await onConfigureAdminLock(payload);
+              if (ok) {
+                showToast(
+                  payload.clear
+                    ? 'تم إلغاء قفل لوحة الإدارة'
+                    : 'تم حفظ إعدادات قفل وإخفاء لوحة الإدارة عن المناديب بنجاح',
+                  'success'
+                );
+              } else {
+                showToast('تعذر تحديث إعدادات حماية لوحة الإدارة', 'alert');
+              }
+              return ok;
+            }}
           />
         )}
 
@@ -651,9 +687,202 @@ function AdminDashboardApp() {
   );
 }
 
+function AdminLoginGate({ onAuthenticated }: { onAuthenticated: (token: string) => void }) {
+  const [password, setPassword] = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!password.trim()) {
+      setError('يرجى إدخال كلمة مرور الإدارة');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: password.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.token) {
+        setError(data.message || 'كلمة مرور الإدارة غير صحيحة');
+        return;
+      }
+      setPassword('');
+      onAuthenticated(data.token);
+    } catch {
+      setError('تعذر الاتصال بالخادم');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div dir="rtl" className="min-h-screen bg-slate-900 flex items-center justify-center p-4 font-sans text-slate-900">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="bg-slate-900 px-6 py-6 text-white text-center space-y-2 border-b border-slate-800">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-600/20 border border-emerald-500/40 flex items-center justify-center mx-auto">
+            <ShieldCheck className="w-7 h-7 text-emerald-400" />
+          </div>
+          <h1 className="text-lg font-bold">دخول لوحة الإدارة</h1>
+          <p className="text-xs text-slate-400">هذه اللوحة محمية بكلمة مرور ومخفية عن المناديب</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+          {error && (
+            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <div>
+            <label className="block font-bold text-slate-700 mb-1.5">كلمة مرور الإدارة:</label>
+            <div className="relative">
+              <input
+                type={showPass ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="أدخل كلمة مرور الإدارة"
+                className="w-full font-mono text-sm px-3.5 py-2.5 pr-10 pl-10 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none text-left"
+                dir="ltr"
+                autoComplete="current-password"
+                autoFocus
+                required
+              />
+              <Lock className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" />
+              <button
+                type="button"
+                onClick={() => setShowPass((p) => !p)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition"
+          >
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
+            <span>{isLoading ? 'جاري التحقق...' : 'فتح لوحة الإدارة'}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
-  if (isCourierPortalUrl()) {
+  const isCourierExplicit = isCourierPortalUrl();
+  const isAdminExplicit = hasAdminQueryParam();
+
+  const [authStatus, setAuthStatus] = useState<{
+    checked: boolean;
+    isLocked: boolean;
+    hideAdminFromRoot: boolean;
+  }>({
+    checked: false,
+    isLocked: false,
+    hideAdminFromRoot: false,
+  });
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
+  const checkAuthStatus = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/auth-status');
+      const data = await res.json();
+      setAuthStatus({
+        checked: true,
+        isLocked: Boolean(data?.isLocked),
+        hideAdminFromRoot: Boolean(data?.hideAdminFromRoot),
+      });
+    } catch {
+      setAuthStatus({ checked: true, isLocked: false, hideAdminFromRoot: false });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isCourierExplicit) {
+      checkAuthStatus();
+    }
+  }, [isCourierExplicit, checkAuthStatus]);
+
+  const handleConfigureAdminLock = useCallback(
+    async (payload: { password?: string; hideAdminFromRoot?: boolean; clear?: boolean }): Promise<boolean> => {
+      try {
+        const res = await fetch('/api/admin/set-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) return false;
+        if (data.token) {
+          setAdminAuthToken(data.token);
+          setIsAdminAuthenticated(true);
+        } else if (payload.clear) {
+          setAdminAuthToken(null);
+          setIsAdminAuthenticated(false);
+        }
+        setAuthStatus({
+          checked: true,
+          isLocked: Boolean(data.isLocked),
+          hideAdminFromRoot: Boolean(data.hideAdminFromRoot),
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    []
+  );
+
+  const handleAdminLogout = useCallback(() => {
+    setAdminAuthToken(null);
+    setIsAdminAuthenticated(false);
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  if (isCourierExplicit) {
     return <CourierPortalView />;
   }
-  return <AdminDashboardApp />;
+
+  if (!authStatus.checked) {
+    return (
+      <div dir="rtl" className="min-h-screen bg-slate-900 flex flex-col items-center justify-center gap-3 text-white">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-400" />
+        <p className="text-xs text-slate-300 font-semibold">جاري تحميل البوابة...</p>
+      </div>
+    );
+  }
+
+  if (authStatus.isLocked && authStatus.hideAdminFromRoot && !isAdminExplicit) {
+    return <CourierPortalView />;
+  }
+
+  if (authStatus.isLocked && !isAdminAuthenticated) {
+    return (
+      <AdminLoginGate
+        onAuthenticated={(token) => {
+          setAdminAuthToken(token);
+          setIsAdminAuthenticated(true);
+        }}
+      />
+    );
+  }
+
+  return (
+    <AdminDashboardApp
+      adminAuthStatus={{ isLocked: authStatus.isLocked, hideAdminFromRoot: authStatus.hideAdminFromRoot }}
+      onConfigureAdminLock={handleConfigureAdminLock}
+      onAdminLogout={handleAdminLogout}
+    />
+  );
 }

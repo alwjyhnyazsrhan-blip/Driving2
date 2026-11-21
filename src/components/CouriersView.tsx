@@ -25,7 +25,9 @@ import {
   Copy,
   Eye,
   EyeOff,
-  ExternalLink
+  ExternalLink,
+  ShieldCheck,
+  ShieldAlert
 } from 'lucide-react';
 import { Courier, Order } from '../types';
 
@@ -38,6 +40,8 @@ interface CouriersViewProps {
   onAssignOrderToCourier?: (courier: Courier) => void;
   onUpdateCourierPhone?: (identifier: { courierId?: string; orderId?: string; courierName?: string; phone: string }) => Promise<void>;
   onSetCourierPassword?: (courierId: string, password: string, clear?: boolean) => Promise<boolean>;
+  adminAuthStatus?: { isLocked: boolean; hideAdminFromRoot: boolean };
+  onConfigureAdminLock?: (payload: { password?: string; hideAdminFromRoot?: boolean; clear?: boolean }) => Promise<boolean>;
 }
 
 // Arabic normalization helper for accurate matching
@@ -95,6 +99,8 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
   onAssignOrderToCourier,
   onUpdateCourierPhone,
   onSetCourierPassword,
+  adminAuthStatus,
+  onConfigureAdminLock,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingCourierId, setEditingCourierId] = useState<string | null>(null);
@@ -109,8 +115,16 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
   const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
+  const [adminPassInput, setAdminPassInput] = useState('');
+  const [showAdminPass, setShowAdminPass] = useState(false);
+  const [hideRootToggle, setHideRootToggle] = useState(true);
+  const [isSavingAdminLock, setIsSavingAdminLock] = useState(false);
+  const [adminLockError, setAdminLockError] = useState('');
+
   const generalPortalUrl =
     typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?courier=1` : '?courier=1';
+  const adminSecretUrl =
+    typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?admin=1` : '?admin=1';
 
   const getCourierPortalUrl = (courier: Courier) => {
     const clean = courier.phone.replace(/[^0-9]/g, '');
@@ -268,6 +282,8 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
           </button>
           <a
             href={generalPortalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-3 py-1.5 bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold flex items-center gap-1 transition shrink-0"
           >
             <ExternalLink className="w-3.5 h-3.5" />
@@ -275,6 +291,184 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
           </a>
         </div>
       </div>
+
+      {/* Admin Dashboard Lock & Hiding from Couriers */}
+      {onConfigureAdminLock && (
+        <div
+          className={`rounded-xl p-4 border text-xs shadow-2xs space-y-3 ${
+            adminAuthStatus?.isLocked
+              ? 'bg-slate-900 text-white border-slate-800'
+              : 'bg-amber-50 text-amber-950 border-amber-300'
+          }`}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div className="flex items-start sm:items-center gap-3">
+              <div
+                className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                  adminAuthStatus?.isLocked
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-amber-500 text-white'
+                }`}
+              >
+                {adminAuthStatus?.isLocked ? (
+                  <ShieldCheck className="w-5 h-5" />
+                ) : (
+                  <ShieldAlert className="w-5 h-5" />
+                )}
+              </div>
+              <div>
+                <h4 className="font-bold text-xs sm:text-sm">
+                  {adminAuthStatus?.isLocked
+                    ? 'لوحة الإدارة محمية بكلمة مرور ومخفية عن المناديب ✅'
+                    : 'حماية وإخفاء لوحة الإدارة عن المناديب (موصى به جداً)'}
+                </h4>
+                <p
+                  className={`text-[11px] mt-0.5 ${
+                    adminAuthStatus?.isLocked ? 'text-slate-300' : 'text-amber-800'
+                  }`}
+                >
+                  {adminAuthStatus?.isLocked
+                    ? adminAuthStatus.hideAdminFromRoot
+                      ? 'أي شخص يفتح الرابط الرئيسي للموقع يرى بوابة المناديب فقط. دخول الإدارة محصور بالرابط الخاص مع كلمة المرور.'
+                      : 'لوحة الإدارة تتطلب كلمة مرور عند الفتح ولا تظهر بياناتها إلا للإدارة.'
+                    : 'لتمنع أي مندوب من فتح لوحة الإدارة عند حذف (?courier=1) من الرابط، عيّن كلمة مرور للإدارة ليصبح الرابط الرئيسي للمناديب فقط.'}
+                </p>
+              </div>
+            </div>
+
+            {adminAuthStatus?.isLocked && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg font-mono text-[11px] text-emerald-300 max-w-xs truncate"
+                  dir="ltr"
+                >
+                  {adminSecretUrl}
+                </span>
+                <button
+                  onClick={() => handleCopyLink('admin_secret', adminSecretUrl)}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shrink-0"
+                >
+                  {copiedLinkId === 'admin_secret' ? (
+                    <Check className="w-3.5 h-3.5" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                  <span>
+                    {copiedLinkId === 'admin_secret' ? 'تم نسخ رابط الإدارة!' : 'نسخ رابط الإدارة الخاص'}
+                  </span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div
+            className={`pt-3 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 ${
+              adminAuthStatus?.isLocked ? 'border-slate-800' : 'border-amber-200'
+            }`}
+          >
+            <div className="flex flex-wrap items-center gap-2 flex-1">
+              <div className="relative w-full sm:w-56">
+                <input
+                  type={showAdminPass ? 'text' : 'password'}
+                  value={adminPassInput}
+                  onChange={(e) => {
+                    setAdminPassInput(e.target.value);
+                    setAdminLockError('');
+                  }}
+                  placeholder={
+                    adminAuthStatus?.isLocked
+                      ? 'تغيير كلمة مرور الإدارة...'
+                      : 'أدخل كلمة مرور للإدارة (4+ أحرف/أرقام)'
+                  }
+                  className={`w-full px-3 py-1.5 pl-8 rounded-lg font-mono text-xs border text-left focus:outline-none ${
+                    adminAuthStatus?.isLocked
+                      ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:border-emerald-500'
+                      : 'bg-white border-amber-300 text-slate-900 focus:border-amber-500'
+                  }`}
+                  dir="ltr"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAdminPass((p) => !p)}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                >
+                  {showAdminPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+
+              <label className="inline-flex items-center gap-1.5 cursor-pointer select-none text-[11px] font-semibold">
+                <input
+                  type="checkbox"
+                  checked={
+                    adminAuthStatus?.isLocked && !adminPassInput.trim()
+                      ? adminAuthStatus.hideAdminFromRoot
+                      : hideRootToggle
+                  }
+                  onChange={async (e) => {
+                    const checked = e.target.checked;
+                    setHideRootToggle(checked);
+                    if (adminAuthStatus?.isLocked && !adminPassInput.trim()) {
+                      setIsSavingAdminLock(true);
+                      await onConfigureAdminLock({ hideAdminFromRoot: checked });
+                      setIsSavingAdminLock(false);
+                    }
+                  }}
+                  className="rounded accent-emerald-600"
+                />
+                <span>إخفاء لوحة الإدارة عن الرابط الرئيسي (/) وجعله للمناديب فقط</span>
+              </label>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                disabled={isSavingAdminLock}
+                onClick={async () => {
+                  setAdminLockError('');
+                  if (adminPassInput.trim().length < 4) {
+                    setAdminLockError('أدخل كلمة مرور من 4 أحرف/أرقام على الأقل');
+                    return;
+                  }
+                  setIsSavingAdminLock(true);
+                  const ok = await onConfigureAdminLock({
+                    password: adminPassInput.trim(),
+                    hideAdminFromRoot: hideRootToggle,
+                  });
+                  setIsSavingAdminLock(false);
+                  if (ok) setAdminPassInput('');
+                }}
+                className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition"
+              >
+                {isSavingAdminLock ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Lock className="w-3.5 h-3.5" />
+                )}
+                <span>{adminAuthStatus?.isLocked ? 'تحديث كلمة السر' : 'قفل وإخفاء لوحة الإدارة'}</span>
+              </button>
+
+              {adminAuthStatus?.isLocked && (
+                <button
+                  type="button"
+                  disabled={isSavingAdminLock}
+                  onClick={async () => {
+                    setIsSavingAdminLock(true);
+                    await onConfigureAdminLock({ clear: true });
+                    setIsSavingAdminLock(false);
+                  }}
+                  className="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/40 rounded-lg text-xs font-bold transition"
+                >
+                  إلغاء القفل
+                </button>
+              )}
+            </div>
+          </div>
+
+          {adminLockError && (
+            <p className="text-[11px] font-bold text-rose-500">{adminLockError}</p>
+          )}
+        </div>
+      )}
 
       {/* Locate Direct Auto-Sync Banner */}
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-emerald-950 text-xs shadow-2xs flex items-center justify-between gap-3">

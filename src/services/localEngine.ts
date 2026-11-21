@@ -67,6 +67,13 @@ interface CourierPortalAuthRecord {
   updatedAt: string;
 }
 
+interface AdminPortalAuthRecord {
+  salt: string;
+  hash: string;
+  hideAdminFromRoot: boolean;
+  updatedAt: string;
+}
+
 interface PersistedDatabase {
   settings: SystemSettings;
   couriers: Courier[];
@@ -75,6 +82,7 @@ interface PersistedDatabase {
   alerts: AlertLog[];
   customCourierPhones: Record<string, { phone: string; name?: string; updatedAt: string }>;
   courierPortalAuth: Record<string, CourierPortalAuthRecord>;
+  adminPortalAuth?: AdminPortalAuthRecord | null;
   updatedAt: string;
 }
 
@@ -86,10 +94,36 @@ let dbState: PersistedDatabase = {
   alerts: [],
   customCourierPhones: {},
   courierPortalAuth: {},
+  adminPortalAuth: null,
   updatedAt: new Date().toISOString(),
 };
 
 const standaloneCourierTokens = new Map<string, { courierId: string; exp: number }>();
+const standaloneAdminTokens = new Map<string, { exp: number }>();
+
+function issueStandaloneAdminToken(): string {
+  const bytes = new Uint8Array(24);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(bytes);
+  } else {
+    for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+  }
+  const token = Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+  standaloneAdminTokens.set(token, { exp: Date.now() + 12 * 60 * 60 * 1000 });
+  return token;
+}
+
+function verifyStandaloneAdminToken(authHeader: string): boolean {
+  const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  if (!bearer) return false;
+  const entry = standaloneAdminTokens.get(bearer);
+  if (!entry) return false;
+  if (Date.now() > entry.exp) {
+    standaloneAdminTokens.delete(bearer);
+    return false;
+  }
+  return true;
+}
 
 let cloudSyncState: CloudSyncState = {
   isActive: true,
@@ -228,6 +262,7 @@ async function loadFromBrowserStorage(): Promise<void> {
     if (Array.isArray(loaded.alerts)) dbState.alerts = loaded.alerts;
     if (loaded.customCourierPhones) dbState.customCourierPhones = loaded.customCourierPhones;
     if (loaded.courierPortalAuth) dbState.courierPortalAuth = loaded.courierPortalAuth;
+    if (loaded.adminPortalAuth) dbState.adminPortalAuth = loaded.adminPortalAuth;
   }
 
   try {
@@ -1463,6 +1498,7 @@ export async function exportFullDatabase(): Promise<string> {
       settings: dbState.settings,
       customCourierPhones: dbState.customCourierPhones,
       courierPortalAuth: dbState.courierPortalAuth,
+      adminPortalAuth: dbState.adminPortalAuth,
       exportedAt: new Date().toISOString(),
     },
     null,
@@ -1489,6 +1525,9 @@ export async function importFullDatabase(jsonStr: string): Promise<{ success: bo
     }
     if (parsed.courierPortalAuth && typeof parsed.courierPortalAuth === 'object') {
       dbState.courierPortalAuth = parsed.courierPortalAuth;
+    }
+    if (parsed.adminPortalAuth) {
+      dbState.adminPortalAuth = parsed.adminPortalAuth;
     }
     await persistToBrowserStorage();
     return {
@@ -1528,6 +1567,92 @@ export async function handleLocalApiRequest(
       ordersCount: dbState.orders.length,
       couriersCount: dbState.couriers.length,
     });
+  }
+
+  if (pathname === '/api/admin/auth-status' && upperMethod === 'GET') {
+    return jsonResp({
+      success: true,
+      isLocked: Boolean(dbState.adminPortalAuth),
+      hideAdminFromRoot: Boolean(dbState.adminPortalAuth?.hideAdminFromRoot),
+      updatedAt: dbState.adminPortalAuth?.updatedAt || null,
+    });
+  }
+
+  if (pathname === '/api/admin/login' && upperMethod === 'POST') {
+    if (!dbState.adminPortalAuth) {
+      return jsonResp({ success: true, token: issueStandaloneAdminToken(), isLocked: false });
+    }
+    const rawPass = typeof body?.password === 'string' ? body.password.trim() : '';
+    if (!rawPass) {
+      return jsonResp({ success: false, message: 'يرجى إدخال كلمة مرور الإدارة' }, 400);
+    }
+    const check = await hashPasswordLocal(rawPass, dbState.adminPortalAuth.salt);
+    if (check.hash !== dbState.adminPortalAuth.hash) {
+      return jsonResp({ success: false, message: 'كلمة مرور الإدارة غير صحيحة' }, 401);
+    }
+    return jsonResp({
+      success: true,
+      token: issueStandaloneAdminToken(),
+      hideAdminFromRoot: dbState.adminPortalAuth.hideAdminFromRoot,
+    });
+  }
+
+  if (pathname === '/api/admin/set-password' && upperMethod === 'POST') {
+    if (dbState.adminPortalAuth && !verifyStandaloneAdminToken(String(headers['authorization'] || ''))) {
+      return jsonResp({ success: false, message: 'يرجى تسجيل الدخول كإدارة أولاً لتعديل القفل' }, 401);
+    }
+    const { password, hideAdminFromRoot, clear } = body || {};
+    if (clear === true) {
+      dbState.adminPortalAuth = null;
+      persistToBrowserStorage();
+      return jsonResp({
+        success: true,
+        isLocked: false,
+        hideAdminFromRoot: false,
+        message: 'تم إلغاء قفل كلمة مرور الإدارة',
+      });
+    }
+    const trimmed = typeof password === 'string' ? password.trim() : '';
+    if (!trimmed && dbState.adminPortalAuth && typeof hideAdminFromRoot === 'boolean') {
+      dbState.adminPortalAuth.hideAdminFromRoot = hideAdminFromRoot;
+      dbState.adminPortalAuth.updatedAt = new Date().toISOString();
+      persistToBrowserStorage();
+      return jsonResp({
+        success: true,
+        isLocked: true,
+        hideAdminFromRoot: dbState.adminPortalAuth.hideAdminFromRoot,
+        token: issueStandaloneAdminToken(),
+        message: 'تم تحديث إعدادات ظهور لوحة الإدارة بنجاح',
+      });
+    }
+    if (trimmed.length < 4) {
+      return jsonResp({ success: false, message: 'كلمة مرور الإدارة يجب أن تكون 4 أحرف أو أرقام على الأقل' }, 400);
+    }
+    const { salt, hash } = await hashPasswordLocal(trimmed);
+    dbState.adminPortalAuth = {
+      salt,
+      hash,
+      hideAdminFromRoot: hideAdminFromRoot !== false,
+      updatedAt: new Date().toISOString(),
+    };
+    persistToBrowserStorage();
+    return jsonResp({
+      success: true,
+      isLocked: true,
+      hideAdminFromRoot: dbState.adminPortalAuth.hideAdminFromRoot,
+      token: issueStandaloneAdminToken(),
+      message: 'تم قفل لوحة الإدارة بكلمة مرور وإخفاؤها عن المناديب بنجاح',
+    });
+  }
+
+  if (
+    dbState.adminPortalAuth &&
+    !pathname.startsWith('/api/courier-portal/') &&
+    pathname !== '/api/locat/sync' &&
+    pathname !== '/api/automation-script' &&
+    !verifyStandaloneAdminToken(String(headers['authorization'] || ''))
+  ) {
+    return jsonResp({ success: false, message: 'مطلوب تسجيل دخول الإدارة للوصول إلى هذه البيانات' }, 401);
   }
 
   if (pathname === '/api/settings') {

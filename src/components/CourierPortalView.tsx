@@ -19,7 +19,6 @@ import {
   TrendingUp,
   Layers,
   XCircle,
-  ArrowRight,
   Loader2,
   ShieldCheck,
 } from 'lucide-react';
@@ -200,9 +199,6 @@ export const CourierPortalView: React.FC = () => {
     }
   };
 
-  const adminPortalUrl =
-    typeof window !== 'undefined' ? window.location.pathname : '/';
-
   // --- LOGIN VIEW ---
   if (!token) {
     return (
@@ -288,18 +284,11 @@ export const CourierPortalView: React.FC = () => {
               )}
             </button>
 
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-              <span className="flex items-center gap-1">
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-center text-[11px] text-slate-500">
+              <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 دخول خاص ومشفر للمندوب
               </span>
-              <a
-                href={adminPortalUrl}
-                className="text-slate-500 hover:text-slate-800 font-semibold flex items-center gap-1 transition"
-              >
-                <ArrowRight className="w-3 h-3" />
-                <span>لوحة الإدارة</span>
-              </a>
             </div>
           </form>
         </div>

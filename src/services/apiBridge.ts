@@ -15,6 +15,12 @@ const listeners = new Set<Listener>();
 let currentConfig: EngineRuntimeConfig = loadEngineConfig();
 let bridgeInstalled = false;
 let nativeFetchRef: typeof window.fetch | null = null;
+// Ephemeral in-memory admin auth token (never persisted to localStorage/sessionStorage)
+let inMemoryAdminToken: string | null = null;
+
+export function setAdminAuthToken(token: string | null) {
+  inMemoryAdminToken = token;
+}
 
 function notifyListeners() {
   listeners.forEach((cb) => {
@@ -173,6 +179,13 @@ export function installApiBridge() {
         });
       }
     } catch {}
+    if (
+      inMemoryAdminToken &&
+      !requestHeaders['authorization'] &&
+      !pathname.startsWith('/api/courier-portal/')
+    ) {
+      requestHeaders['authorization'] = `Bearer ${inMemoryAdminToken}`;
+    }
     const queryString = rawUrl.includes('?') ? rawUrl.split('?')[1] : '';
 
     // Mode 1: Pure Standalone Browser Mode (Zero hosting / zero backend server calls)
@@ -206,8 +219,17 @@ export function installApiBridge() {
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
+      const mergedFetchHeaders = new Headers(init?.headers || (input instanceof Request ? input.headers : undefined));
+      if (
+        inMemoryAdminToken &&
+        !mergedFetchHeaders.has('Authorization') &&
+        !pathname.startsWith('/api/courier-portal/')
+      ) {
+        mergedFetchHeaders.set('Authorization', `Bearer ${inMemoryAdminToken}`);
+      }
       const response = await originalFetch(targetUrl, {
         ...init,
+        headers: mergedFetchHeaders,
         signal: init?.signal || controller.signal,
       });
       clearTimeout(timeoutId);

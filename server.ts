@@ -128,6 +128,13 @@ interface CourierPortalAuthRecord {
   updatedAt: string;
 }
 
+interface AdminPortalAuthRecord {
+  salt: string;
+  hash: string;
+  hideAdminFromRoot: boolean;
+  updatedAt: string;
+}
+
 const COURIER_SESSION_SECRET =
   process.env.COURIER_SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 const COURIER_TOKEN_TTL_MS = 12 * 60 * 60 * 1000;
@@ -138,6 +145,7 @@ let orderHistory: Order[] = [];
 let alerts: AlertLog[] = [];
 let customCourierPhones: Record<string, { phone: string; name?: string; updatedAt: string }> = {};
 let courierPortalAuth: Record<string, CourierPortalAuthRecord> = {};
+let adminPortalAuth: AdminPortalAuthRecord | null = null;
 let whatsappSessionBackup: Record<string, string> = {};
 
 function backupBaileysSession() {
@@ -235,6 +243,9 @@ function loadStoreFromDisk() {
       if (data.courierPortalAuth && typeof data.courierPortalAuth === 'object') {
         courierPortalAuth = data.courierPortalAuth;
       }
+      if (data.adminPortalAuth && typeof data.adminPortalAuth === 'object' && data.adminPortalAuth.hash) {
+        adminPortalAuth = data.adminPortalAuth;
+      }
       if (data.whatsappSessionBackup && typeof data.whatsappSessionBackup === 'object') {
         whatsappSessionBackup = data.whatsappSessionBackup;
       }
@@ -267,6 +278,7 @@ function saveStoreToDisk() {
       settings,
       customCourierPhones,
       courierPortalAuth,
+      adminPortalAuth,
       whatsappSessionBackup,
     };
     fs.writeFileSync(STORE_FILE, JSON.stringify(data, null, 2), 'utf-8');
@@ -1030,6 +1042,51 @@ function verifyCourierToken(token: string): { courierId: string } | null {
 
 const courierLoginRateLimit = new Map<string, { count: number; resetAt: number }>();
 
+function signAdminToken(): string {
+  const payloadObj = {
+    role: 'admin',
+    iat: Date.now(),
+    exp: Date.now() + COURIER_TOKEN_TTL_MS,
+  };
+  const payloadB64 = Buffer.from(JSON.stringify(payloadObj), 'utf8').toString('base64url');
+  const sig = crypto
+    .createHmac('sha256', COURIER_SESSION_SECRET)
+    .update(payloadB64)
+    .digest('base64url');
+  return `${payloadB64}.${sig}`;
+}
+
+function verifyAdminToken(token: string): boolean {
+  try {
+    if (!token || typeof token !== 'string' || !token.includes('.')) return false;
+    const [payloadB64, sigB64] = token.split('.');
+    if (!payloadB64 || !sigB64) return false;
+    const expectedSig = crypto
+      .createHmac('sha256', COURIER_SESSION_SECRET)
+      .update(payloadB64)
+      .digest('base64url');
+    const a = Buffer.from(sigB64, 'utf8');
+    const b = Buffer.from(expectedSig, 'utf8');
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false;
+    const parsed = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
+    if (!parsed || parsed.role !== 'admin' || typeof parsed.exp !== 'number') return false;
+    return Date.now() <= parsed.exp;
+  } catch {
+    return false;
+  }
+}
+
+function verifyAdminPasswordInput(password: string, record: AdminPortalAuthRecord): boolean {
+  try {
+    const derived = crypto.scryptSync(password, record.salt, 64);
+    const stored = Buffer.from(record.hash, 'hex');
+    if (derived.length !== stored.length) return false;
+    return crypto.timingSafeEqual(derived, stored);
+  } catch {
+    return false;
+  }
+}
+
 function checkCourierLoginRateLimit(key: string): boolean {
   const now = Date.now();
   const entry = courierLoginRateLimit.get(key);
@@ -1616,6 +1673,136 @@ function generateDailyReport(): DailyReportSummary {
 }
 
 // --- API ROUTES ---
+
+// Admin Auth Status & Login / Lock Controls (protects admin dashboard & APIs from couriers when enabled)
+app.get('/api/admin/auth-status', (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    isLocked: Boolean(adminPortalAuth),
+    hideAdminFromRoot: Boolean(adminPortalAuth?.hideAdminFromRoot),
+    updatedAt: adminPortalAuth?.updatedAt || null,
+  });
+});
+
+app.post('/api/admin/login', (req: Request, res: Response) => {
+  if (!adminPortalAuth) {
+    res.json({ success: true, token: signAdminToken(), isLocked: false });
+    return;
+  }
+  const rawPass = typeof req.body?.password === 'string' ? req.body.password.trim() : '';
+  if (!rawPass) {
+    res.status(400).json({ success: false, message: 'يرجى إدخال كلمة مرور الإدارة' });
+    return;
+  }
+  const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+  const rateKey = `admin::${clientIp}`;
+  if (!checkCourierLoginRateLimit(rateKey)) {
+    res.status(429).json({ success: false, message: 'محاولات دخول متكررة خاطئة، يرجى الانتظار 10 دقائق' });
+    return;
+  }
+  if (!verifyAdminPasswordInput(rawPass, adminPortalAuth)) {
+    recordCourierLoginFailure(rateKey);
+    res.status(401).json({ success: false, message: 'كلمة مرور الإدارة غير صحيحة' });
+    return;
+  }
+  courierLoginRateLimit.delete(rateKey);
+  res.json({
+    success: true,
+    token: signAdminToken(),
+    hideAdminFromRoot: adminPortalAuth.hideAdminFromRoot,
+  });
+});
+
+app.post('/api/admin/set-password', (req: Request, res: Response) => {
+  // If already locked, verify current admin Bearer token before modifying
+  if (adminPortalAuth) {
+    const authHeader = String(req.headers.authorization || '');
+    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+    if (!verifyAdminToken(bearer)) {
+      res.status(401).json({ success: false, message: 'يرجى تسجيل الدخول كإدارة أولاً لتعديل القفل' });
+      return;
+    }
+  }
+
+  const { password, hideAdminFromRoot, clear } = req.body || {};
+  if (clear === true) {
+    adminPortalAuth = null;
+    saveStoreToDisk();
+    res.json({
+      success: true,
+      isLocked: false,
+      hideAdminFromRoot: false,
+      message: 'تم إلغاء قفل كلمة مرور الإدارة',
+    });
+    return;
+  }
+
+  const trimmed = typeof password === 'string' ? password.trim() : '';
+  if (!trimmed && adminPortalAuth && typeof hideAdminFromRoot === 'boolean') {
+    adminPortalAuth.hideAdminFromRoot = hideAdminFromRoot;
+    adminPortalAuth.updatedAt = new Date().toISOString();
+    saveStoreToDisk();
+    res.json({
+      success: true,
+      isLocked: true,
+      hideAdminFromRoot: adminPortalAuth.hideAdminFromRoot,
+      token: signAdminToken(),
+      message: hideAdminFromRoot
+        ? 'تم إخفاء لوحة الإدارة عن الرابط الرئيسي وجعلها في رابط الإدارة فقط'
+        : 'تم تحديث إعدادات ظهور لوحة الإدارة بنجاح',
+    });
+    return;
+  }
+
+  if (trimmed.length < 4) {
+    res.status(400).json({ success: false, message: 'كلمة مرور الإدارة يجب أن تكون 4 أحرف أو أرقام على الأقل' });
+    return;
+  }
+
+  const { salt, hash } = hashPortalPassword(trimmed);
+  adminPortalAuth = {
+    salt,
+    hash,
+    hideAdminFromRoot: hideAdminFromRoot !== false,
+    updatedAt: new Date().toISOString(),
+  };
+  saveStoreToDisk();
+
+  res.json({
+    success: true,
+    isLocked: true,
+    hideAdminFromRoot: adminPortalAuth.hideAdminFromRoot,
+    token: signAdminToken(),
+    message: 'تم قفل لوحة الإدارة بكلمة مرور وإخفاؤها عن المناديب بنجاح',
+  });
+});
+
+// Enforce admin authentication on all admin /api/* endpoints when adminPortalAuth is enabled
+app.use('/api', (req: Request, res: Response, next) => {
+  if (!adminPortalAuth) {
+    next();
+    return;
+  }
+  const p = req.path || '';
+  if (
+    p === '/health' ||
+    p === '/admin/auth-status' ||
+    p === '/admin/login' ||
+    p.startsWith('/courier-portal/') ||
+    p === '/locat/sync' ||
+    p === '/automation-script'
+  ) {
+    next();
+    return;
+  }
+  const authHeader = String(req.headers.authorization || '');
+  const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  if (!verifyAdminToken(bearer)) {
+    res.status(401).json({ success: false, message: 'مطلوب تسجيل دخول الإدارة للوصول إلى هذه البيانات' });
+    return;
+  }
+  next();
+});
 
 // 1. System Settings
 app.get('/api/settings', (req: Request, res: Response) => {

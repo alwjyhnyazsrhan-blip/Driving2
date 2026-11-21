@@ -14,7 +14,8 @@ import {
   Code,
   Radio,
   QrCode,
-  Play
+  Play,
+  ShieldCheck
 } from 'lucide-react';
 import { SystemSettings, Order, WhatsAppConnectionState, CloudSyncState } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
@@ -35,6 +36,8 @@ interface HeaderProps {
   whatsappState?: WhatsAppConnectionState | null;
   cloudSyncState?: CloudSyncState | null;
   onOpenGuide?: () => void;
+  adminAuthStatus?: { isLocked: boolean; hideAdminFromRoot: boolean };
+  onAdminLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -53,6 +56,8 @@ export const Header: React.FC<HeaderProps> = ({
   whatsappState,
   cloudSyncState,
   onOpenGuide,
+  adminAuthStatus,
+  onAdminLogout,
 }) => {
   const delayedOrdersCount = orders.filter((o) => o.isDelayed).length;
 
@@ -205,6 +210,29 @@ export const Header: React.FC<HeaderProps> = ({
             )}
 
             <PWAInstallButton compact />
+
+            {/* Admin Lock / Security Status */}
+            {adminAuthStatus?.isLocked ? (
+              onAdminLogout && (
+                <button
+                  onClick={onAdminLogout}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white border border-slate-800 transition"
+                  title="قفل لوحة الإدارة والخروج"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>قفل الإدارة</span>
+                </button>
+              )
+            ) : (
+              <button
+                onClick={() => setCurrentTab('couriers')}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition"
+                title="تعيين كلمة مرور وإخفاء لوحة الإدارة عن المناديب"
+              >
+                <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+                <span>إخفاء الإدارة عن المناديب</span>
+              </button>
+            )}
 
             {/* Settings */}
             <button
