@@ -285,7 +285,7 @@ export const CourierPortalView: React.FC = () => {
             </button>
 
             <div className="pt-3 border-t border-slate-100 flex items-center justify-center text-[11px] text-slate-500">
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 دخول خاص ومشفر للمندوب
               </span>
