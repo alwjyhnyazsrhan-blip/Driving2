@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { 
   UserPlus, 
-  Phone, 
   MessageCircle, 
   Edit3, 
   Trash2, 
   Clock, 
   Package, 
   Layers, 
-  ShieldCheck, 
   AlertCircle, 
   Award,
   Search,
@@ -16,13 +14,18 @@ import {
   Tag,
   Plus,
   AlertTriangle,
-  Info,
   UserCheck,
   Lock,
   Edit2,
   Check,
   X,
-  Loader2
+  Loader2,
+  KeyRound,
+  Link2,
+  Copy,
+  Eye,
+  EyeOff,
+  ExternalLink
 } from 'lucide-react';
 import { Courier, Order } from '../types';
 
@@ -34,6 +37,7 @@ interface CouriersViewProps {
   onDeleteCourier: (id: string) => void;
   onAssignOrderToCourier?: (courier: Courier) => void;
   onUpdateCourierPhone?: (identifier: { courierId?: string; orderId?: string; courierName?: string; phone: string }) => Promise<void>;
+  onSetCourierPassword?: (courierId: string, password: string, clear?: boolean) => Promise<boolean>;
 }
 
 // Arabic normalization helper for accurate matching
@@ -90,11 +94,86 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
   onDeleteCourier,
   onAssignOrderToCourier,
   onUpdateCourierPhone,
+  onSetCourierPassword,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingCourierId, setEditingCourierId] = useState<string | null>(null);
   const [inputPhone, setInputPhone] = useState<string>('');
   const [isSavingPhone, setIsSavingPhone] = useState<boolean>(false);
+
+  const [passwordEditorId, setPasswordEditorId] = useState<string | null>(null);
+  const [passwordInput, setPasswordInput] = useState<string>('');
+  const [showPasswordInput, setShowPasswordInput] = useState<boolean>(false);
+  const [isSavingPassword, setIsSavingPassword] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const generalPortalUrl =
+    typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?courier=1` : '?courier=1';
+
+  const getCourierPortalUrl = (courier: Courier) => {
+    const clean = courier.phone.replace(/[^0-9]/g, '');
+    if (!clean) return generalPortalUrl;
+    return `${generalPortalUrl}&phone=${encodeURIComponent(clean)}`;
+  };
+
+  const handleCopyLink = async (id: string, url: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedLinkId(id);
+      setTimeout(() => setCopiedLinkId((prev) => (prev === id ? null : prev)), 2500);
+    } catch {
+      // Fallback copy
+      const el = document.createElement('textarea');
+      el.value = url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      setCopiedLinkId(id);
+      setTimeout(() => setCopiedLinkId((prev) => (prev === id ? null : prev)), 2500);
+    }
+  };
+
+  const handleStartEditPassword = (c: Courier) => {
+    setPasswordEditorId(c.id);
+    setPasswordInput('');
+    setShowPasswordInput(false);
+    setPasswordError('');
+  };
+
+  const handleSavePassword = async (courierId: string, clear = false) => {
+    setPasswordError('');
+    if (!clear && passwordInput.trim().length < 4) {
+      setPasswordError('كلمة المرور يجب أن تكون 4 أحرف/أرقام على الأقل');
+      return;
+    }
+    setIsSavingPassword(true);
+    try {
+      let ok = false;
+      if (onSetCourierPassword) {
+        ok = await onSetCourierPassword(courierId, passwordInput.trim(), clear);
+      } else {
+        const res = await fetch('/api/couriers/set-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ courierId, password: passwordInput.trim(), clear }),
+        });
+        const data = await res.json();
+        ok = Boolean(data.success);
+        if (!ok) setPasswordError(data.message || 'تعذر حفظ كلمة المرور');
+      }
+      if (ok) {
+        setPasswordEditorId(null);
+        setPasswordInput('');
+      }
+    } catch {
+      setPasswordError('تعذر الاتصال بالخادم');
+    } finally {
+      setIsSavingPassword(false);
+    }
+  };
 
   const handleStartEditPhone = (c: Courier) => {
     setEditingCourierId(c.id);
@@ -145,7 +224,7 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
         <div>
           <h2 className="text-lg font-bold text-slate-900">إدارة بيانات المناديب وربط حسابات لوكيت</h2>
           <p className="text-xs text-slate-500 mt-1">
-            ربط اسم المندوب وحساباته في لوكيت برقم الواتساب الفعلي لضمان وصول التنبيهات المباشرة حتى عند تنقله بين الحسابات.
+            ربط اسم المندوب برقم الواتساب وتعيين كلمة مرور ورابط دخول خاص لمتابعة طلباته وإنجازه الشهري.
           </p>
         </div>
         <button
@@ -155,6 +234,46 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
           <UserPlus className="w-4 h-4" />
           <span>إضافة مندوب جديد</span>
         </button>
+      </div>
+
+      {/* Courier Portal Link Banner */}
+      <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-indigo-950 text-xs shadow-2xs flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <Link2 className="w-4 h-4" />
+          </div>
+          <div>
+            <h4 className="font-bold text-xs sm:text-sm text-indigo-950">
+              رابط بوابة المناديب (يدخل كل مندوب برقم جواله وكلمة المرور التي تحددها له)
+            </h4>
+            <p className="text-[11px] text-indigo-700 mt-0.5">
+              يمكنك مشاركة الرابط العام مع أي مندوب أو نسخ رابط مخصص برقم جواله من بطاقة المندوب أدناه ليطلع على طلباته وإنجازه الشهري فقط.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className="px-2.5 py-1.5 bg-white border border-indigo-200 rounded-lg font-mono text-[11px] text-indigo-800 max-w-xs truncate"
+            dir="ltr"
+          >
+            {generalPortalUrl}
+          </span>
+          <button
+            onClick={() => handleCopyLink('general', generalPortalUrl)}
+            className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shrink-0"
+          >
+            {copiedLinkId === 'general' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copiedLinkId === 'general' ? 'تم النسخ!' : 'نسخ رابط المناديب'}</span>
+          </button>
+          <a
+            href={generalPortalUrl}
+            className="px-3 py-1.5 bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold flex items-center gap-1 transition shrink-0"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>معاينة البوابة</span>
+          </a>
+        </div>
       </div>
 
       {/* Locate Direct Auto-Sync Banner */}
@@ -468,6 +587,113 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
                     )}
                   </div>
 
+                  {/* Courier Portal Link & Password Control */}
+                  <div className="bg-indigo-50/60 p-2.5 rounded-lg border border-indigo-100 space-y-2">
+                    <div className="flex items-center justify-between gap-2 text-[11px]">
+                      <div className="flex items-center gap-1.5">
+                        <KeyRound className="w-3.5 h-3.5 text-indigo-600" />
+                        <span className="font-bold text-indigo-950">بوابة المندوب:</span>
+                        {courier.hasPortalPassword ? (
+                          <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                            كلمة السر مفعّلة
+                          </span>
+                        ) : (
+                          <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
+                            بدون كلمة سر
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() =>
+                            passwordEditorId === courier.id
+                              ? setPasswordEditorId(null)
+                              : handleStartEditPassword(courier)
+                          }
+                          className="px-2 py-1 rounded bg-white hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-[10px] flex items-center gap-1 transition"
+                          title="تعيين أو تعديل كلمة مرور المندوب"
+                        >
+                          <KeyRound className="w-3 h-3" />
+                          <span>{courier.hasPortalPassword ? 'تعديل السر' : 'تعيين سر'}</span>
+                        </button>
+                        <button
+                          onClick={() => handleCopyLink(courier.id, getCourierPortalUrl(courier))}
+                          className="px-2 py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] flex items-center gap-1 transition"
+                          title="نسخ رابط دخول المندوب الخاص"
+                        >
+                          {copiedLinkId === courier.id ? (
+                            <>
+                              <Check className="w-3 h-3" />
+                              <span>نُسخ</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>نسخ الرابط</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {passwordEditorId === courier.id && (
+                      <div className="pt-1.5 border-t border-indigo-200/70 space-y-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <div className="relative flex-1">
+                            <input
+                              type={showPasswordInput ? 'text' : 'password'}
+                              value={passwordInput}
+                              onChange={(e) => setPasswordInput(e.target.value)}
+                              placeholder="كلمة مرور جديدة (4+ أحرف/أرقام)"
+                              className="w-full px-2 py-1 pl-7 text-[11px] font-mono bg-white border border-indigo-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 text-left"
+                              dir="ltr"
+                              autoFocus
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSavePassword(courier.id);
+                                if (e.key === 'Escape') setPasswordEditorId(null);
+                              }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPasswordInput((prev) => !prev)}
+                              className="absolute left-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            >
+                              {showPasswordInput ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                            </button>
+                          </div>
+                          <button
+                            onClick={() => handleSavePassword(courier.id)}
+                            disabled={isSavingPassword}
+                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold flex items-center gap-1 transition disabled:opacity-60"
+                          >
+                            {isSavingPassword ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                            <span>حفظ</span>
+                          </button>
+                          {courier.hasPortalPassword && (
+                            <button
+                              onClick={() => handleSavePassword(courier.id, true)}
+                              disabled={isSavingPassword}
+                              className="px-2 py-1 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded text-[10px] font-bold transition"
+                              title="إلغاء كلمة المرور"
+                            >
+                              إزالة
+                            </button>
+                          )}
+                          <button
+                            onClick={() => setPasswordEditorId(null)}
+                            className="p-1 text-slate-400 hover:text-slate-600"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                        {passwordError && (
+                          <p className="text-[10px] font-semibold text-rose-600">{passwordError}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
                   {/* Notes */}
                   {courier.notes && (
                     <p className="text-[11px] text-slate-500 italic bg-slate-50/50 p-2 rounded border border-slate-100">
@@ -498,17 +724,33 @@ export const CouriersView: React.FC<CouriersViewProps> = ({
                       <Edit3 className="w-3 h-3" />
                       <span>تعديل</span>
                     </button>
-                    <button
-                      onClick={() => {
-                        if (confirm(`هل أنت متأكد من حذف المندوب ${courier.name}؟`)) {
-                          onDeleteCourier(courier.id);
-                        }
-                      }}
-                      className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition"
-                      title="حذف المندوب"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+                    {confirmDeleteId === courier.id ? (
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => {
+                            onDeleteCourier(courier.id);
+                            setConfirmDeleteId(null);
+                          }}
+                          className="px-2 py-1 text-[10px] font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition"
+                        >
+                          تأكيد الحذف
+                        </button>
+                        <button
+                          onClick={() => setConfirmDeleteId(null)}
+                          className="p-1 text-slate-400 hover:text-slate-600"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmDeleteId(courier.id)}
+                        className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition"
+                        title="حذف المندوب"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

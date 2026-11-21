@@ -11,12 +11,28 @@ import { QuickOrderModal } from './components/QuickOrderModal';
 import { WhatsAppTestModal } from './components/WhatsAppTestModal';
 import { QuickWhatsAppModal } from './components/QuickWhatsAppModal';
 import { GuideWalkthroughModal } from './components/GuideWalkthroughModal';
+import { CourierPortalView } from './components/CourierPortalView';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { getEngineConfig, subscribeEngineConfig } from './services/apiBridge';
 import { Order, Courier, SystemSettings, AlertLog, WhatsAppConnectionState, CloudSyncState } from './types';
 import { Bell, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 
-export default function App() {
+function isCourierPortalUrl(): boolean {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  const courierParam = params.get('courier');
+  const driverParam = params.get('driver');
+  const portalParam = params.get('portal');
+  return (
+    courierParam === '1' ||
+    courierParam === 'true' ||
+    driverParam === '1' ||
+    driverParam === 'true' ||
+    portalParam === 'courier'
+  );
+}
+
+function AdminDashboardApp() {
   const [currentTab, setCurrentTab] = useState<'orders' | 'couriers' | 'alerts' | 'report' | 'automation'>('orders');
   
   // Data states (clean initial state, filled only with real data from backend/Locat)
@@ -309,9 +325,33 @@ export default function App() {
       if (data.success) {
         showToast(data.message);
         fetchData();
+      } else {
+        showToast(data.message || 'تعذر حفظ بيانات المندوب', 'alert');
       }
     } catch (err) {
       console.error(err);
+      showToast('تعذر الاتصال بالخادم لحفظ بيانات المندوب', 'alert');
+    }
+  };
+
+  const handleSetCourierPassword = async (courierId: string, password: string, clear = false): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/couriers/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courierId, password, clear }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message, 'success');
+        fetchData(true);
+        return true;
+      }
+      showToast(data.message || 'تعذر تحديث كلمة المرور', 'alert');
+      return false;
+    } catch {
+      showToast('تعذر الاتصال بالخادم لتحديث كلمة المرور', 'alert');
+      return false;
     }
   };
 
@@ -526,6 +566,7 @@ export default function App() {
               setIsAddOrderOpen(true);
             }}
             onUpdateCourierPhone={handleUpdateCourierPhone}
+            onSetCourierPassword={handleSetCourierPassword}
           />
         )}
 
@@ -608,4 +649,11 @@ export default function App() {
       <OfflineIndicator />
     </div>
   );
+}
+
+export default function App() {
+  if (isCourierPortalUrl()) {
+    return <CourierPortalView />;
+  }
+  return <AdminDashboardApp />;
 }

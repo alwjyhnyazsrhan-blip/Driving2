@@ -68,14 +68,15 @@ export const QuickWhatsAppModal: React.FC<QuickWhatsAppModalProps> = ({
     setSaveSuccess(false);
 
     try {
+      const trimmedWebhook = webhookUrl.trim();
       const payload: Partial<SystemSettings> = {
         adminPhone: adminPhone.trim(),
         adminName: adminName.trim(),
         adminPhone2: adminPhone2.trim(),
         adminName2: adminName2.trim(),
-        webhookUrl: webhookUrl.trim(),
+        webhookUrl: trimmedWebhook,
         webhookApiKey: webhookApiKey.trim(),
-        whatsAppProvider,
+        whatsAppProvider: trimmedWebhook.startsWith('http') ? 'webhook' : whatsAppProvider,
       };
 
       // 1. Direct call to server endpoint

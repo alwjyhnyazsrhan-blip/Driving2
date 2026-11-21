@@ -156,13 +156,32 @@ export function installApiBridge() {
       } catch {}
     }
 
+    const requestHeaders: Record<string, string> = {};
+    try {
+      const hdrSource = init?.headers || (input instanceof Request ? input.headers : undefined);
+      if (hdrSource instanceof Headers) {
+        hdrSource.forEach((v, k) => {
+          requestHeaders[k.toLowerCase()] = v;
+        });
+      } else if (Array.isArray(hdrSource)) {
+        hdrSource.forEach(([k, v]) => {
+          requestHeaders[String(k).toLowerCase()] = String(v);
+        });
+      } else if (hdrSource && typeof hdrSource === 'object') {
+        Object.entries(hdrSource).forEach(([k, v]) => {
+          requestHeaders[k.toLowerCase()] = String(v);
+        });
+      }
+    } catch {}
+    const queryString = rawUrl.includes('?') ? rawUrl.split('?')[1] : '';
+
     // Mode 1: Pure Standalone Browser Mode (Zero hosting / zero backend server calls)
     if (currentConfig.mode === 'standalone') {
       if (currentConfig.activeBackend !== 'standalone') {
         currentConfig = saveEngineConfig({ activeBackend: 'standalone' });
         notifyListeners();
       }
-      return handleLocalApiRequest(pathname, method, parsedBody);
+      return handleLocalApiRequest(pathname, method, parsedBody, requestHeaders, queryString);
     }
 
     // Mode 2: Explicit Local Server Mode (e.g., PC .exe on LAN, Termux 127.0.0.1:3000, or Render/VPS URL)
@@ -232,7 +251,7 @@ export function installApiBridge() {
         startStandaloneBackgroundRunners();
         notifyListeners();
       }
-      return handleLocalApiRequest(pathname, method, parsedBody);
+      return handleLocalApiRequest(pathname, method, parsedBody, requestHeaders, queryString);
     }
   };
 

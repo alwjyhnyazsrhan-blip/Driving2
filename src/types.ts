@@ -20,6 +20,48 @@ export interface Courier {
   delayedOrdersCount: number;
   notes?: string;
   updatedAt: string;
+  hasPortalPassword?: boolean;
+  portalPasswordUpdatedAt?: string;
+  portalPassword?: string;
+  clearPortalPassword?: boolean;
+}
+
+export interface CourierPortalDailyBreakdown {
+  date: string;
+  total: number;
+  delivered: number;
+}
+
+export interface CourierPortalDashboardData {
+  courier: {
+    id: string;
+    name: string;
+    phone: string;
+    status: 'active' | 'idle' | 'off_duty';
+    locatAccounts: string[];
+    activeOrdersCount: number;
+    totalDeliveredToday: number;
+    avgDeliveryTimeMinutes: number;
+    idNumber?: string;
+    cityId?: string;
+    gift?: number;
+    balance?: number;
+  };
+  monthKey: string;
+  monthLabel: string;
+  availableMonths: string[];
+  summary: {
+    activeNow: number;
+    delayedNow: number;
+    deliveredToday: number;
+    deliveredThisMonth: number;
+    totalOrdersThisMonth: number;
+    canceledThisMonth: number;
+    avgDeliveryMinutesThisMonth: number;
+  };
+  dailyBreakdown: CourierPortalDailyBreakdown[];
+  activeOrders: Order[];
+  monthlyOrders: Order[];
 }
 
 export type OrderStatus = 'pickup_pending' | 'in_transit' | 'delayed' | 'delivered' | 'cancelled';
@@ -159,6 +201,7 @@ export interface AlertLog {
   status: 'sent' | 'pending' | 'failed' | 'queued' | 'skipped_cooldown';
   waLink: string;
   delayAppliedSeconds?: number;
+  error?: string;
 }
 
 export interface CourierPerformanceItem {

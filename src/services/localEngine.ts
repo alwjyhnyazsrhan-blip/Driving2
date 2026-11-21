@@ -60,12 +60,21 @@ const DEFAULT_SETTINGS: SystemSettings = {
   enableCloudAutoSync: true,
 };
 
+interface CourierPortalAuthRecord {
+  salt: string;
+  hash: string;
+  phoneNormalized: string;
+  updatedAt: string;
+}
+
 interface PersistedDatabase {
   settings: SystemSettings;
   couriers: Courier[];
   orders: Order[];
+  orderHistory: Order[];
   alerts: AlertLog[];
   customCourierPhones: Record<string, { phone: string; name?: string; updatedAt: string }>;
+  courierPortalAuth: Record<string, CourierPortalAuthRecord>;
   updatedAt: string;
 }
 
@@ -73,10 +82,14 @@ let dbState: PersistedDatabase = {
   settings: { ...DEFAULT_SETTINGS },
   couriers: [],
   orders: [],
+  orderHistory: [],
   alerts: [],
   customCourierPhones: {},
+  courierPortalAuth: {},
   updatedAt: new Date().toISOString(),
 };
+
+const standaloneCourierTokens = new Map<string, { courierId: string; exp: number }>();
 
 let cloudSyncState: CloudSyncState = {
   isActive: true,
@@ -207,8 +220,14 @@ async function loadFromBrowserStorage(): Promise<void> {
     if (loaded.settings) dbState.settings = { ...DEFAULT_SETTINGS, ...dbState.settings, ...loaded.settings };
     if (Array.isArray(loaded.couriers)) dbState.couriers = loaded.couriers;
     if (Array.isArray(loaded.orders)) dbState.orders = loaded.orders;
+    if (Array.isArray(loaded.orderHistory)) {
+      dbState.orderHistory = loaded.orderHistory;
+    } else if (dbState.orders.length > 0) {
+      dbState.orderHistory = [...dbState.orders];
+    }
     if (Array.isArray(loaded.alerts)) dbState.alerts = loaded.alerts;
     if (loaded.customCourierPhones) dbState.customCourierPhones = loaded.customCourierPhones;
+    if (loaded.courierPortalAuth) dbState.courierPortalAuth = loaded.courierPortalAuth;
   }
 
   try {
@@ -275,6 +294,7 @@ export async function mirrorServerDataToLocal(endpoint: string, data: any): Prom
     changed = true;
   } else if (endpoint === '/api/orders' && Array.isArray(data.orders)) {
     dbState.orders = data.orders;
+    upsertLocalOrderHistory(data.orders);
     changed = true;
   } else if (endpoint === '/api/alerts' && Array.isArray(data.alerts)) {
     dbState.alerts = data.alerts;
@@ -363,6 +383,131 @@ function isOrderFromToday(order: Order, todayKey: string = getRiyadhDateKey()): 
   const parsed = new Date(refIso);
   if (isNaN(parsed.getTime())) return true;
   return getRiyadhDateKey(parsed) === todayKey;
+}
+
+function getRiyadhMonthKey(date: Date = new Date()): string {
+  return getRiyadhDateKey(date).slice(0, 7);
+}
+
+function getOrderRiyadhDateKey(order: Order): string {
+  const refIso = order.deliveryTime || order.assignedAt || order.createdAt || order.lastUpdated;
+  if (!refIso) return getRiyadhDateKey();
+  const parsed = new Date(refIso);
+  if (isNaN(parsed.getTime())) return getRiyadhDateKey();
+  return getRiyadhDateKey(parsed);
+}
+
+function formatMonthLabelArabic(monthKey: string): string {
+  const parts = monthKey.split('-');
+  if (parts.length !== 2) return monthKey;
+  const year = Number(parts[0]);
+  const month = Number(parts[1]);
+  if (!year || !month) return monthKey;
+  const d = new Date(Date.UTC(year, month - 1, 15, 12, 0, 0));
+  return d.toLocaleDateString('ar-SA', { timeZone: 'Asia/Riyadh', year: 'numeric', month: 'long' });
+}
+
+function upsertLocalOrderHistory(incomingList: Order[]) {
+  if (!Array.isArray(incomingList) || incomingList.length === 0) return;
+  const map = new Map<string, Order>();
+  for (const existing of dbState.orderHistory) {
+    if (existing && existing.id) map.set(existing.id, existing);
+  }
+  for (const ord of incomingList) {
+    if (ord && ord.id) map.set(ord.id, { ...ord });
+  }
+  const cutoffMs = Date.now() - 95 * 24 * 60 * 60 * 1000;
+  const merged = Array.from(map.values()).filter((o) => {
+    const refIso = o.deliveryTime || o.assignedAt || o.createdAt || o.lastUpdated;
+    if (!refIso) return true;
+    const ms = new Date(refIso).getTime();
+    return isNaN(ms) || ms >= cutoffMs;
+  });
+  merged.sort((a, b) => {
+    const tA = new Date(a.createdAt || a.assignedAt || a.lastUpdated || 0).getTime();
+    const tB = new Date(b.createdAt || b.assignedAt || b.lastUpdated || 0).getTime();
+    return tB - tA;
+  });
+  dbState.orderHistory = merged.slice(0, 6000);
+}
+
+function phonesMatchNormalized(phoneA: string, phoneB: string): boolean {
+  const nA = normalizeSaudiPhone(phoneA || '');
+  const nB = normalizeSaudiPhone(phoneB || '');
+  if (!nA || !nB) return false;
+  if (nA === nB) return true;
+  return nA.length >= 9 && nB.length >= 9 && nA.slice(-9) === nB.slice(-9);
+}
+
+async function hashPasswordLocal(password: string, existingSalt?: string): Promise<{ salt: string; hash: string }> {
+  const saltBytes = new Uint8Array(16);
+  if (!existingSalt) {
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      crypto.getRandomValues(saltBytes);
+    } else {
+      for (let i = 0; i < saltBytes.length; i++) saltBytes[i] = Math.floor(Math.random() * 256);
+    }
+  }
+  const salt = existingSalt || Array.from(saltBytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+  if (typeof crypto !== 'undefined' && crypto.subtle) {
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: enc.encode(salt), iterations: 50000, hash: 'SHA-256' },
+      keyMaterial,
+      256
+    );
+    const hash = Array.from(new Uint8Array(bits)).map((b) => b.toString(16).padStart(2, '0')).join('');
+    return { salt, hash };
+  }
+  // Fallback deterministic mixing if WebCrypto subtle is unavailable in insecure HTTP context
+  let h1 = 0x811c9dc5;
+  const input = `${salt}:${password}`;
+  for (let i = 0; i < input.length; i++) {
+    h1 ^= input.charCodeAt(i);
+    h1 = Math.imul(h1, 0x01000193);
+  }
+  return { salt, hash: (h1 >>> 0).toString(16).padStart(8, '0') };
+}
+
+function findLocalPortalAuthRecord(courier: Courier): CourierPortalAuthRecord | undefined {
+  if (dbState.courierPortalAuth[courier.id]) return dbState.courierPortalAuth[courier.id];
+  const cNorm = normalizeSaudiPhone(courier.phone || courier.customPhone || '');
+  if (cNorm) {
+    for (const [k, rec] of Object.entries(dbState.courierPortalAuth)) {
+      if (rec?.phoneNormalized && phonesMatchNormalized(rec.phoneNormalized, cNorm)) {
+        dbState.courierPortalAuth[courier.id] = rec;
+        if (k !== courier.id) delete dbState.courierPortalAuth[k];
+        return rec;
+      }
+    }
+  }
+  return undefined;
+}
+
+function sanitizeLocalCourier(courier: Courier): Courier {
+  const auth = findLocalPortalAuthRecord(courier);
+  const { portalPassword: _p, clearPortalPassword: _cp, ...rest } = courier as Courier & {
+    portalPassword?: string;
+    clearPortalPassword?: boolean;
+  };
+  return {
+    ...rest,
+    hasPortalPassword: Boolean(auth),
+    portalPasswordUpdatedAt: auth?.updatedAt,
+  };
+}
+
+function issueStandaloneCourierToken(courierId: string): string {
+  const bytes = new Uint8Array(24);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(bytes);
+  } else {
+    for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+  }
+  const token = Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+  standaloneCourierTokens.set(token, { courierId, exp: Date.now() + 12 * 60 * 60 * 1000 });
+  return token;
 }
 
 const notifiedOrderAssignments = new Set<string>();
@@ -629,11 +774,16 @@ async function processQueue() {
     await new Promise((r) => setTimeout(r, Math.min(nextItem.delayAppliedSeconds, 10) * 1000));
 
     const sendRes = await dispatchWhatsAppStandalone(nextItem.recipientPhone, nextItem.message);
-    nextItem.status = 'sent';
+    nextItem.status = sendRes.success ? 'sent' : 'failed';
     nextItem.sentAt = new Date().toISOString();
     nextItem.waLink = sendRes.waLink;
+    if (sendRes.error) {
+      nextItem.error = sendRes.error;
+    }
     queueStats.totalProcessed++;
-    queueStats.totalSent++;
+    if (sendRes.success) {
+      queueStats.totalSent++;
+    }
 
     dbState.alerts.unshift({
       id: `alt-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -645,9 +795,10 @@ async function processQueue() {
       elapsedMinutes: 0,
       activeOrdersCount: 0,
       message: nextItem.message,
-      status: 'sent',
+      status: sendRes.success ? 'sent' : 'failed',
       waLink: sendRes.waLink,
       delayAppliedSeconds: nextItem.delayAppliedSeconds,
+      error: sendRes.error,
     });
 
     notifyBrowserDesktop(
@@ -1090,6 +1241,7 @@ export async function executeStandaloneLocatSync(): Promise<{
       const tB = new Date(b.createdAt || b.assignedAt || 0).getTime();
       return tB - tA;
     });
+    upsertLocalOrderHistory(syncedOrders);
 
     dbState.couriers.forEach((c) => {
       const cOrders = dbState.orders.filter(
@@ -1306,9 +1458,11 @@ export async function exportFullDatabase(): Promise<string> {
     {
       couriers: dbState.couriers,
       orders: dbState.orders,
+      orderHistory: dbState.orderHistory,
       alerts: dbState.alerts,
       settings: dbState.settings,
       customCourierPhones: dbState.customCourierPhones,
+      courierPortalAuth: dbState.courierPortalAuth,
       exportedAt: new Date().toISOString(),
     },
     null,
@@ -1325,12 +1479,16 @@ export async function importFullDatabase(jsonStr: string): Promise<{ success: bo
     }
     if (Array.isArray(parsed.couriers)) dbState.couriers = parsed.couriers;
     if (Array.isArray(parsed.orders)) dbState.orders = parsed.orders;
+    if (Array.isArray(parsed.orderHistory)) dbState.orderHistory = parsed.orderHistory;
     if (Array.isArray(parsed.alerts)) dbState.alerts = parsed.alerts;
     if (parsed.settings && typeof parsed.settings === 'object') {
       dbState.settings = { ...DEFAULT_SETTINGS, ...parsed.settings };
     }
     if (parsed.customCourierPhones && typeof parsed.customCourierPhones === 'object') {
       dbState.customCourierPhones = parsed.customCourierPhones;
+    }
+    if (parsed.courierPortalAuth && typeof parsed.courierPortalAuth === 'object') {
+      dbState.courierPortalAuth = parsed.courierPortalAuth;
     }
     await persistToBrowserStorage();
     return {
@@ -1350,9 +1508,16 @@ function jsonResp(data: unknown, status = 200): Response {
   });
 }
 
-export async function handleLocalApiRequest(pathname: string, method: string, body: any): Promise<Response> {
+export async function handleLocalApiRequest(
+  pathname: string,
+  method: string,
+  body: any,
+  headers: Record<string, string> = {},
+  queryString = ''
+): Promise<Response> {
   await ensureLocalEngineInitialized();
   const upperMethod = (method || 'GET').toUpperCase();
+  const queryParams = new URLSearchParams(queryString || '');
 
   if (pathname === '/api/health') {
     return jsonResp({
@@ -1407,18 +1572,25 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
 
   if (pathname === '/api/couriers') {
     if (upperMethod === 'GET') {
-      const enriched = dbState.couriers.map((c) => ({
-        ...c,
-        activeOrdersCount: dbState.orders.filter((o) => {
-          const match = findCourierForOrder(o.locatAccount, o.courierName, o.courierId, o.courierPhone);
-          return match ? match.id === c.id : false;
-        }).length,
-      }));
+      const enriched = dbState.couriers.map((c) =>
+        sanitizeLocalCourier({
+          ...c,
+          activeOrdersCount: dbState.orders.filter((o) => {
+            if (o.isDelivered || o.isCanceled || o.status === 'delivered' || o.status === 'cancelled') return false;
+            const match = findCourierForOrder(o.locatAccount, o.courierName, o.courierId, o.courierPhone);
+            return match ? match.id === c.id : false;
+          }).length,
+        })
+      );
       return jsonResp({ success: true, couriers: enriched });
     }
     if (upperMethod === 'POST') {
-      const { id, name, locatAccounts, phone, notes, status } = body || {};
+      const { id, name, locatAccounts, phone, notes, status, portalPassword, clearPortalPassword } = body || {};
       if (!name || !phone) return jsonResp({ success: false, message: 'اسم المندوب ورقم الواتساب مطلوبان' }, 400);
+      const trimmedPass = typeof portalPassword === 'string' ? portalPassword.trim() : '';
+      if (trimmedPass && trimmedPass.length < 4) {
+        return jsonResp({ success: false, message: 'كلمة مرور المندوب يجب أن تكون 4 أحرف/أرقام على الأقل' }, 400);
+      }
       const accountsArray = Array.isArray(locatAccounts)
         ? locatAccounts.map((a: string) => a.trim()).filter(Boolean)
         : typeof locatAccounts === 'string'
@@ -1439,8 +1611,25 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
             status: status || dbState.couriers[idx].status,
             updatedAt: new Date().toISOString(),
           };
+          if (clearPortalPassword) {
+            delete dbState.courierPortalAuth[dbState.couriers[idx].id];
+          } else if (trimmedPass) {
+            const { salt, hash } = await hashPasswordLocal(trimmedPass);
+            dbState.courierPortalAuth[dbState.couriers[idx].id] = {
+              salt,
+              hash,
+              phoneNormalized: normalizeSaudiPhone(formattedPhone),
+              updatedAt: new Date().toISOString(),
+            };
+          } else if (dbState.courierPortalAuth[dbState.couriers[idx].id]) {
+            dbState.courierPortalAuth[dbState.couriers[idx].id].phoneNormalized = normalizeSaudiPhone(formattedPhone);
+          }
           applyCustomPhoneToCourier(dbState.couriers[idx], formattedPhone, name);
-          return jsonResp({ success: true, courier: dbState.couriers[idx], message: 'تم تحديث بيانات المندوب محلياً بنجاح' });
+          return jsonResp({
+            success: true,
+            courier: sanitizeLocalCourier(dbState.couriers[idx]),
+            message: 'تم تحديث بيانات المندوب محلياً بنجاح',
+          });
         }
       }
       const newCourier: Courier = {
@@ -1458,10 +1647,196 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
         notes: notes || '',
         updatedAt: new Date().toISOString(),
       };
+      if (trimmedPass) {
+        const { salt, hash } = await hashPasswordLocal(trimmedPass);
+        dbState.courierPortalAuth[newCourier.id] = {
+          salt,
+          hash,
+          phoneNormalized: normalizeSaudiPhone(formattedPhone),
+          updatedAt: new Date().toISOString(),
+        };
+      }
       dbState.couriers.push(newCourier);
       applyCustomPhoneToCourier(newCourier, formattedPhone, name);
-      return jsonResp({ success: true, courier: newCourier, message: 'تمت إضافة المندوب وتثبيت رقمه بنجاح' });
+      return jsonResp({
+        success: true,
+        courier: sanitizeLocalCourier(newCourier),
+        message: 'تمت إضافة المندوب وتثبيت رقمه بنجاح',
+      });
     }
+  }
+
+  if (pathname === '/api/couriers/set-password' && upperMethod === 'POST') {
+    const { courierId, password, clear } = body || {};
+    if (!courierId) return jsonResp({ success: false, message: 'معرف المندوب مطلوب' }, 400);
+    const courier = dbState.couriers.find((c) => c.id === courierId);
+    if (!courier) return jsonResp({ success: false, message: 'المندوب غير موجود' }, 404);
+    if (clear === true) {
+      delete dbState.courierPortalAuth[courier.id];
+      persistToBrowserStorage();
+      return jsonResp({
+        success: true,
+        courier: sanitizeLocalCourier(courier),
+        message: `تم إزالة كلمة مرور المندوب (${courier.name})`,
+      });
+    }
+    const trimmed = typeof password === 'string' ? password.trim() : '';
+    if (trimmed.length < 4) {
+      return jsonResp({ success: false, message: 'يرجى إدخال كلمة مرور لا تقل عن 4 أحرف أو أرقام' }, 400);
+    }
+    const { salt, hash } = await hashPasswordLocal(trimmed);
+    dbState.courierPortalAuth[courier.id] = {
+      salt,
+      hash,
+      phoneNormalized: normalizeSaudiPhone(courier.phone || courier.customPhone || ''),
+      updatedAt: new Date().toISOString(),
+    };
+    persistToBrowserStorage();
+    return jsonResp({
+      success: true,
+      courier: sanitizeLocalCourier(courier),
+      message: `تم تعيين كلمة مرور المندوب (${courier.name}) بنجاح`,
+    });
+  }
+
+  if (pathname === '/api/courier-portal/login' && upperMethod === 'POST') {
+    const rawPhone = typeof body?.phone === 'string' ? body.phone.trim() : '';
+    const rawPassword = typeof body?.password === 'string' ? body.password.trim() : '';
+    if (!rawPhone || !rawPassword) {
+      return jsonResp({ success: false, message: 'يرجى إدخال رقم الجوال وكلمة المرور' }, 400);
+    }
+    const normPhone = normalizeSaudiPhone(rawPhone);
+    if (!normPhone || normPhone.length < 9) {
+      return jsonResp({ success: false, message: 'صيغة رقم الجوال غير صحيحة' }, 400);
+    }
+    const candidates = dbState.couriers.filter((c) => phonesMatchNormalized(c.phone || c.customPhone || '', normPhone));
+    let authed: Courier | undefined;
+    for (const cand of candidates) {
+      const rec = findLocalPortalAuthRecord(cand);
+      if (rec) {
+        const check = await hashPasswordLocal(rawPassword, rec.salt);
+        if (check.hash === rec.hash) {
+          authed = cand;
+          break;
+        }
+      }
+    }
+    if (!authed) {
+      return jsonResp({ success: false, message: 'رقم الجوال أو كلمة المرور غير صحيحة' }, 401);
+    }
+    const token = issueStandaloneCourierToken(authed.id);
+    return jsonResp({
+      success: true,
+      token,
+      courier: { id: authed.id, name: authed.name, phone: authed.phone, status: authed.status },
+    });
+  }
+
+  if (pathname === '/api/courier-portal/dashboard' && upperMethod === 'GET') {
+    const authHeader = String(headers['authorization'] || '');
+    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+    const session = bearer ? standaloneCourierTokens.get(bearer) : undefined;
+    if (!session || Date.now() > session.exp) {
+      return jsonResp({ success: false, message: 'انتهت جلسة الدخول، يرجى تسجيل الدخول مجدداً' }, 401);
+    }
+    const courier = dbState.couriers.find((c) => c.id === session.courierId);
+    if (!courier) {
+      return jsonResp({ success: false, message: 'الحساب غير موجود' }, 401);
+    }
+
+    const combinedMap = new Map<string, Order>();
+    for (const h of dbState.orderHistory) {
+      if (h && h.id) combinedMap.set(h.id, h);
+    }
+    for (const live of dbState.orders) {
+      if (live && live.id) combinedMap.set(live.id, live);
+    }
+
+    const allCourierOrders = Array.from(combinedMap.values())
+      .filter((o) => {
+        if (o.courierId && o.courierId === courier.id) return true;
+        const m = findCourierForOrder(o.locatAccount, o.courierName, o.courierId, o.courierPhone);
+        if (m && m.id === courier.id) return true;
+        return Boolean(o.courierPhone && courier.phone && phonesMatchNormalized(o.courierPhone, courier.phone));
+      })
+      .sort((a, b) => {
+        const tA = new Date(a.createdAt || a.assignedAt || a.lastUpdated || 0).getTime();
+        const tB = new Date(b.createdAt || b.assignedAt || b.lastUpdated || 0).getTime();
+        return tB - tA;
+      });
+
+    const currentMonthKey = getRiyadhMonthKey();
+    const reqMonthParam = queryParams.get('month') || '';
+    const requestedMonth = /^\d{4}-\d{2}$/.test(reqMonthParam) ? reqMonthParam : currentMonthKey;
+
+    const monthsSet = new Set<string>([currentMonthKey]);
+    allCourierOrders.forEach((o) => {
+      const dk = getOrderRiyadhDateKey(o);
+      if (dk && dk.length >= 7) monthsSet.add(dk.slice(0, 7));
+    });
+    const availableMonths = Array.from(monthsSet).sort((a, b) => b.localeCompare(a));
+
+    const monthlyOrders = allCourierOrders.filter((o) => getOrderRiyadhDateKey(o).startsWith(requestedMonth));
+    const activeOrders = allCourierOrders.filter(
+      (o) => !o.isDelivered && !o.isCanceled && o.status !== 'delivered' && o.status !== 'cancelled'
+    );
+    const todayKey = getRiyadhDateKey();
+    const deliveredToday = allCourierOrders.filter(
+      (o) => (o.isDelivered || o.status === 'delivered') && isOrderFromToday(o, todayKey)
+    ).length;
+    const deliveredMonth = monthlyOrders.filter((o) => o.isDelivered || o.status === 'delivered');
+    const canceledThisMonth = monthlyOrders.filter((o) => o.isCanceled || o.status === 'cancelled').length;
+    const delayedNow = activeOrders.filter((o) => o.isDelayed || o.status === 'delayed').length;
+    const doneTime = deliveredMonth.filter((o) => o.elapsedMinutes > 0);
+    const avgDeliveryMinutesThisMonth =
+      doneTime.length > 0
+        ? Math.round(doneTime.reduce((s, o) => s + o.elapsedMinutes, 0) / doneTime.length)
+        : courier.avgDeliveryTimeMinutes || 0;
+
+    const dailyMap = new Map<string, { date: string; total: number; delivered: number }>();
+    monthlyOrders.forEach((o) => {
+      const dk = getOrderRiyadhDateKey(o);
+      const ent = dailyMap.get(dk) || { date: dk, total: 0, delivered: 0 };
+      ent.total += 1;
+      if (o.isDelivered || o.status === 'delivered') ent.delivered += 1;
+      dailyMap.set(dk, ent);
+    });
+    const dailyBreakdown = Array.from(dailyMap.values()).sort((a, b) => b.date.localeCompare(a.date));
+
+    return jsonResp({
+      success: true,
+      dashboard: {
+        courier: {
+          id: courier.id,
+          name: courier.name,
+          phone: courier.phone,
+          status: courier.status,
+          locatAccounts: courier.locatAccounts,
+          activeOrdersCount: activeOrders.length,
+          totalDeliveredToday: deliveredToday,
+          avgDeliveryTimeMinutes: courier.avgDeliveryTimeMinutes,
+          idNumber: courier.idNumber,
+          cityId: courier.cityId,
+          gift: courier.gift,
+          balance: courier.balance,
+        },
+        monthKey: requestedMonth,
+        monthLabel: formatMonthLabelArabic(requestedMonth),
+        availableMonths,
+        summary: {
+          activeNow: activeOrders.length,
+          delayedNow,
+          deliveredToday,
+          deliveredThisMonth: deliveredMonth.length,
+          totalOrdersThisMonth: monthlyOrders.length,
+          canceledThisMonth,
+          avgDeliveryMinutesThisMonth,
+        },
+        dailyBreakdown,
+        activeOrders,
+        monthlyOrders,
+      },
+    });
   }
 
   if (pathname === '/api/couriers/update-phone' && upperMethod === 'POST') {
@@ -1504,6 +1879,7 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
   if (pathname.startsWith('/api/couriers/') && upperMethod === 'DELETE') {
     const id = pathname.split('/').pop();
     dbState.couriers = dbState.couriers.filter((c) => c.id !== id);
+    if (id) delete dbState.courierPortalAuth[id];
     persistToBrowserStorage();
     return jsonResp({ success: true, message: 'تم حذف المندوب بنجاح' });
   }
@@ -1746,6 +2122,7 @@ export async function handleLocalApiRequest(pathname: string, method: string, bo
         dbState.orders.unshift(ord);
       }
     });
+    upsertLocalOrderHistory(dbState.orders);
     persistToBrowserStorage();
     return jsonResp({ success: true, message: `تمت إضافة ${liveOrders.length} طلب محلياً`, alertsGenerated });
   }

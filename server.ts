@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import crypto from 'crypto';
 import QRCode from 'qrcode';
 import pino from 'pino';
 import makeWASocket, {
@@ -120,10 +121,23 @@ const STORE_FILE = path.resolve(PERSISTENT_DIR, 'locat_database.json');
 const SESSION_BACKUP_FILE = path.resolve(PERSISTENT_DIR, 'baileys_session_backup.json');
 const AUTH_DIR = process.env.BAILEYS_AUTH_DIR || path.resolve(PERSISTENT_DIR, 'baileys_auth_info');
 
+interface CourierPortalAuthRecord {
+  salt: string;
+  hash: string;
+  phoneNormalized: string;
+  updatedAt: string;
+}
+
+const COURIER_SESSION_SECRET =
+  process.env.COURIER_SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+const COURIER_TOKEN_TTL_MS = 12 * 60 * 60 * 1000;
+
 let couriers: Courier[] = [];
 let orders: Order[] = [];
+let orderHistory: Order[] = [];
 let alerts: AlertLog[] = [];
 let customCourierPhones: Record<string, { phone: string; name?: string; updatedAt: string }> = {};
+let courierPortalAuth: Record<string, CourierPortalAuthRecord> = {};
 let whatsappSessionBackup: Record<string, string> = {};
 
 function backupBaileysSession() {
@@ -205,6 +219,11 @@ function loadStoreFromDisk() {
       const data = JSON.parse(raw);
       if (Array.isArray(data.couriers)) couriers = data.couriers;
       if (Array.isArray(data.orders)) orders = data.orders;
+      if (Array.isArray(data.orderHistory)) {
+        orderHistory = data.orderHistory;
+      } else if (orders.length > 0) {
+        orderHistory = [...orders];
+      }
       if (Array.isArray(data.alerts)) alerts = data.alerts;
       if (data.settings && typeof data.settings === 'object') {
         settings = { ...settings, ...data.settings };
@@ -213,10 +232,13 @@ function loadStoreFromDisk() {
       if (data.customCourierPhones && typeof data.customCourierPhones === 'object') {
         customCourierPhones = data.customCourierPhones;
       }
+      if (data.courierPortalAuth && typeof data.courierPortalAuth === 'object') {
+        courierPortalAuth = data.courierPortalAuth;
+      }
       if (data.whatsappSessionBackup && typeof data.whatsappSessionBackup === 'object') {
         whatsappSessionBackup = data.whatsappSessionBackup;
       }
-      console.log(`[Store] ✅ تم تحميل البيانات من القرص: ${couriers.length} مندوب، ${orders.length} طلب.`);
+      console.log(`[Store] ✅ تم تحميل البيانات من القرص: ${couriers.length} مندوب، ${orders.length} طلب (${orderHistory.length} في الأرشيف الشهري).`);
     }
 
     // Also check standalone session backup file if not present in main db
@@ -237,7 +259,16 @@ function loadStoreFromDisk() {
 
 function saveStoreToDisk() {
   try {
-    const data = { couriers, orders, alerts, settings, customCourierPhones, whatsappSessionBackup };
+    const data = {
+      couriers,
+      orders,
+      orderHistory,
+      alerts,
+      settings,
+      customCourierPhones,
+      courierPortalAuth,
+      whatsappSessionBackup,
+    };
     fs.writeFileSync(STORE_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch (err) {
     console.error('[Store] فشل حفظ البيانات في القرص:', err);
@@ -842,6 +873,18 @@ function getRiyadhDateKey(date: Date = new Date()): string {
   return date.toLocaleDateString('en-CA', { timeZone: 'Asia/Riyadh' });
 }
 
+function getRiyadhMonthKey(date: Date = new Date()): string {
+  return getRiyadhDateKey(date).slice(0, 7);
+}
+
+function getOrderRiyadhDateKey(order: Order): string {
+  const refIso = order.deliveryTime || order.assignedAt || order.createdAt || order.lastUpdated;
+  if (!refIso) return getRiyadhDateKey();
+  const parsed = new Date(refIso);
+  if (isNaN(parsed.getTime())) return getRiyadhDateKey();
+  return getRiyadhDateKey(parsed);
+}
+
 function getRiyadh24HourTime(date: Date = new Date()): string {
   return date.toLocaleTimeString('en-GB', {
     timeZone: 'Asia/Riyadh',
@@ -857,6 +900,171 @@ function isOrderFromToday(order: Order, todayKey: string = getRiyadhDateKey()): 
   const parsed = new Date(refIso);
   if (isNaN(parsed.getTime())) return true;
   return getRiyadhDateKey(parsed) === todayKey;
+}
+
+function upsertOrderHistory(incomingList: Order[]) {
+  if (!Array.isArray(incomingList) || incomingList.length === 0) return;
+  const map = new Map<string, Order>();
+  for (const existing of orderHistory) {
+    if (existing && existing.id) map.set(existing.id, existing);
+  }
+  for (const ord of incomingList) {
+    if (ord && ord.id) {
+      map.set(ord.id, { ...ord });
+    }
+  }
+  const cutoffMs = Date.now() - 95 * 24 * 60 * 60 * 1000;
+  const merged = Array.from(map.values()).filter((o) => {
+    const refIso = o.deliveryTime || o.assignedAt || o.createdAt || o.lastUpdated;
+    if (!refIso) return true;
+    const ms = new Date(refIso).getTime();
+    return isNaN(ms) || ms >= cutoffMs;
+  });
+  merged.sort((a, b) => {
+    const tA = new Date(a.createdAt || a.assignedAt || a.lastUpdated || 0).getTime();
+    const tB = new Date(b.createdAt || b.assignedAt || b.lastUpdated || 0).getTime();
+    return tB - tA;
+  });
+  orderHistory = merged.slice(0, 8000);
+}
+
+// --- COURIER PORTAL SECURITY HELPERS (SCRYPT HASHING + HMAC TOKENS) ---
+function hashPortalPassword(password: string): { salt: string; hash: string } {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+  return { salt, hash };
+}
+
+function verifyPortalPassword(password: string, record: CourierPortalAuthRecord): boolean {
+  try {
+    const derived = crypto.scryptSync(password, record.salt, 64);
+    const stored = Buffer.from(record.hash, 'hex');
+    if (derived.length !== stored.length) return false;
+    return crypto.timingSafeEqual(derived, stored);
+  } catch {
+    return false;
+  }
+}
+
+function phonesMatchNormalized(phoneA: string, phoneB: string): boolean {
+  const nA = normalizeSaudiPhone(phoneA || '');
+  const nB = normalizeSaudiPhone(phoneB || '');
+  if (!nA || !nB) return false;
+  if (nA === nB) return true;
+  if (nA.length >= 9 && nB.length >= 9 && nA.slice(-9) === nB.slice(-9)) return true;
+  return false;
+}
+
+function findCourierPortalAuthRecord(courier: Courier): CourierPortalAuthRecord | undefined {
+  if (courierPortalAuth[courier.id]) return courierPortalAuth[courier.id];
+  const cNorm = normalizeSaudiPhone(courier.phone || courier.customPhone || '');
+  if (cNorm) {
+    for (const [key, rec] of Object.entries(courierPortalAuth)) {
+      if (rec?.phoneNormalized && phonesMatchNormalized(rec.phoneNormalized, cNorm)) {
+        courierPortalAuth[courier.id] = rec;
+        if (key !== courier.id) delete courierPortalAuth[key];
+        return rec;
+      }
+    }
+  }
+  return undefined;
+}
+
+function sanitizeCourierForAdmin(courier: Courier): Courier {
+  const authRec = findCourierPortalAuthRecord(courier);
+  const { portalPassword: _p, clearPortalPassword: _cp, ...safeRest } = courier as Courier & {
+    portalPassword?: string;
+    clearPortalPassword?: boolean;
+  };
+  return {
+    ...safeRest,
+    hasPortalPassword: Boolean(authRec),
+    portalPasswordUpdatedAt: authRec?.updatedAt,
+  };
+}
+
+function setCourierPortalPasswordRecord(courier: Courier, password: string) {
+  const { salt, hash } = hashPortalPassword(password);
+  courierPortalAuth[courier.id] = {
+    salt,
+    hash,
+    phoneNormalized: normalizeSaudiPhone(courier.phone || courier.customPhone || ''),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function signCourierToken(courierId: string): string {
+  const payloadObj = {
+    courierId,
+    iat: Date.now(),
+    exp: Date.now() + COURIER_TOKEN_TTL_MS,
+  };
+  const payloadB64 = Buffer.from(JSON.stringify(payloadObj), 'utf8').toString('base64url');
+  const sig = crypto
+    .createHmac('sha256', COURIER_SESSION_SECRET)
+    .update(payloadB64)
+    .digest('base64url');
+  return `${payloadB64}.${sig}`;
+}
+
+function verifyCourierToken(token: string): { courierId: string } | null {
+  try {
+    if (!token || typeof token !== 'string' || !token.includes('.')) return null;
+    const [payloadB64, sigB64] = token.split('.');
+    if (!payloadB64 || !sigB64) return null;
+    const expectedSig = crypto
+      .createHmac('sha256', COURIER_SESSION_SECRET)
+      .update(payloadB64)
+      .digest('base64url');
+    const a = Buffer.from(sigB64, 'utf8');
+    const b = Buffer.from(expectedSig, 'utf8');
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+    const parsed = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
+    if (!parsed || typeof parsed.courierId !== 'string' || typeof parsed.exp !== 'number') return null;
+    if (Date.now() > parsed.exp) return null;
+    return { courierId: parsed.courierId };
+  } catch {
+    return null;
+  }
+}
+
+const courierLoginRateLimit = new Map<string, { count: number; resetAt: number }>();
+
+function checkCourierLoginRateLimit(key: string): boolean {
+  const now = Date.now();
+  const entry = courierLoginRateLimit.get(key);
+  if (!entry || now > entry.resetAt) return true;
+  return entry.count < 5;
+}
+
+function recordCourierLoginFailure(key: string) {
+  const now = Date.now();
+  const entry = courierLoginRateLimit.get(key);
+  if (!entry || now > entry.resetAt) {
+    courierLoginRateLimit.set(key, { count: 1, resetAt: now + 10 * 60 * 1000 });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function formatMonthLabelArabic(monthKey: string): string {
+  const parts = monthKey.split('-');
+  if (parts.length !== 2) return monthKey;
+  const year = Number(parts[0]);
+  const month = Number(parts[1]);
+  if (!year || !month) return monthKey;
+  const d = new Date(Date.UTC(year, month - 1, 15, 12, 0, 0));
+  return d.toLocaleDateString('ar-SA', { timeZone: 'Asia/Riyadh', year: 'numeric', month: 'long' });
+}
+
+function doesOrderBelongToCourier(order: Order, courier: Courier): boolean {
+  if (order.courierId && order.courierId === courier.id) return true;
+  const matched = findCourierForOrder(order.locatAccount, order.courierName, order.courierId, order.courierPhone);
+  if (matched && matched.id === courier.id) return true;
+  if (order.courierPhone && courier.phone && phonesMatchNormalized(order.courierPhone, courier.phone)) {
+    return true;
+  }
+  return false;
 }
 
 // Track notified (orderId + courier) assignments in memory so we never duplicate
@@ -1558,19 +1766,20 @@ app.get('/api/couriers', (req: Request, res: Response) => {
   // Update activeOrdersCount based on current orders using flexible smart matching
   const enrichedCouriers = couriers.map((c) => {
     const activeCount = orders.filter((o) => {
+      if (o.isDelivered || o.isCanceled || o.status === 'delivered' || o.status === 'cancelled') return false;
       const match = findCourierForOrder(o.locatAccount, o.courierName, o.courierId, o.courierPhone);
       return match ? match.id === c.id : false;
     }).length;
-    return {
+    return sanitizeCourierForAdmin({
       ...c,
       activeOrdersCount: activeCount,
-    };
+    });
   });
   res.json({ success: true, couriers: enrichedCouriers });
 });
 
 app.post('/api/couriers', (req: Request, res: Response) => {
-  const { id, name, locatAccounts, phone, notes, status } = req.body;
+  const { id, name, locatAccounts, phone, notes, status, portalPassword, clearPortalPassword } = req.body;
 
   if (!name || !phone) {
     res.status(400).json({ success: false, message: 'اسم المندوب ورقم الواتساب مطلوبان' });
@@ -1583,6 +1792,11 @@ app.post('/api/couriers', (req: Request, res: Response) => {
     : (typeof locatAccounts === 'string' ? locatAccounts.split(',').map((a) => a.trim()).filter(Boolean) : []);
 
   const formattedPhone = formatPhoneWithPlus(phone);
+  const trimmedPassword = typeof portalPassword === 'string' ? portalPassword.trim() : '';
+  if (trimmedPassword && trimmedPassword.length < 4) {
+    res.status(400).json({ success: false, message: 'كلمة مرور المندوب يجب أن تكون 4 أحرف/أرقام على الأقل' });
+    return;
+  }
 
   if (id) {
     // Update existing courier
@@ -1600,9 +1814,21 @@ app.post('/api/couriers', (req: Request, res: Response) => {
         updatedAt: new Date().toISOString(),
       };
 
+      if (clearPortalPassword) {
+        delete courierPortalAuth[couriers[index].id];
+      } else if (trimmedPassword) {
+        setCourierPortalPasswordRecord(couriers[index], trimmedPassword);
+      } else if (courierPortalAuth[couriers[index].id]) {
+        courierPortalAuth[couriers[index].id].phoneNormalized = normalizeSaudiPhone(formattedPhone);
+      }
+
       applyCustomPhoneToCourier(couriers[index], formattedPhone, name);
 
-      res.json({ success: true, courier: couriers[index], message: 'تم تحديث بيانات المندوب وتثبيت الرقم بنجاح' });
+      res.json({
+        success: true,
+        courier: sanitizeCourierForAdmin(couriers[index]),
+        message: 'تم تحديث بيانات المندوب وتثبيت الرقم بنجاح',
+      });
       return;
     }
   }
@@ -1624,10 +1850,232 @@ app.post('/api/couriers', (req: Request, res: Response) => {
     updatedAt: new Date().toISOString(),
   };
 
+  if (trimmedPassword) {
+    setCourierPortalPasswordRecord(newCourier, trimmedPassword);
+  }
+
   couriers.push(newCourier);
   applyCustomPhoneToCourier(newCourier, formattedPhone, name);
 
-  res.json({ success: true, courier: newCourier, message: 'تمت إضافة المندوب وتثبيت الرقم بنجاح' });
+  res.json({
+    success: true,
+    courier: sanitizeCourierForAdmin(newCourier),
+    message: 'تمت إضافة المندوب وتثبيت الرقم بنجاح',
+  });
+});
+
+// Set or update courier portal password
+app.post('/api/couriers/set-password', (req: Request, res: Response) => {
+  const { courierId, password, clear } = req.body || {};
+  if (!courierId || typeof courierId !== 'string') {
+    res.status(400).json({ success: false, message: 'معرف المندوب مطلوب' });
+    return;
+  }
+
+  const courier = couriers.find((c) => c.id === courierId);
+  if (!courier) {
+    res.status(404).json({ success: false, message: 'المندوب غير موجود' });
+    return;
+  }
+
+  if (clear === true) {
+    delete courierPortalAuth[courier.id];
+    saveStoreToDisk();
+    res.json({
+      success: true,
+      courier: sanitizeCourierForAdmin(courier),
+      message: `تم إزالة كلمة مرور بوابة المندوب (${courier.name})`,
+    });
+    return;
+  }
+
+  const trimmed = typeof password === 'string' ? password.trim() : '';
+  if (trimmed.length < 4) {
+    res.status(400).json({ success: false, message: 'يرجى إدخال كلمة مرور لا تقل عن 4 أحرف أو أرقام' });
+    return;
+  }
+
+  setCourierPortalPasswordRecord(courier, trimmed);
+  saveStoreToDisk();
+
+  res.json({
+    success: true,
+    courier: sanitizeCourierForAdmin(courier),
+    message: `تم تعيين وحفظ كلمة مرور الدخول للمندوب (${courier.name}) بنجاح`,
+  });
+});
+
+// Courier Portal Authentication & Self-Service Dashboard
+app.post('/api/courier-portal/login', (req: Request, res: Response) => {
+  const { phone, password } = req.body || {};
+  const rawPhone = typeof phone === 'string' ? phone.trim() : '';
+  const rawPassword = typeof password === 'string' ? password.trim() : '';
+
+  if (!rawPhone || !rawPassword) {
+    res.status(400).json({ success: false, message: 'يرجى إدخال رقم الجوال وكلمة المرور' });
+    return;
+  }
+
+  const normPhone = normalizeSaudiPhone(rawPhone);
+  if (!normPhone || normPhone.length < 9) {
+    res.status(400).json({ success: false, message: 'صيغة رقم الجوال غير صحيحة' });
+    return;
+  }
+
+  const clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+  const rateKey = `${clientIp}::${normPhone.slice(-9)}`;
+  if (!checkCourierLoginRateLimit(rateKey)) {
+    res.status(429).json({
+      success: false,
+      message: 'محاولات دخول متكررة خاطئة، يرجى الانتظار 10 دقائق ثم المحاولة مجدداً',
+    });
+    return;
+  }
+
+  // Find all couriers matching this phone number and verify against stored password hash
+  const matchingCouriers = couriers.filter((c) => phonesMatchNormalized(c.phone || c.customPhone || '', normPhone));
+  let authenticatedCourier: Courier | undefined;
+
+  for (const candidate of matchingCouriers) {
+    const authRec = findCourierPortalAuthRecord(candidate);
+    if (authRec && verifyPortalPassword(rawPassword, authRec)) {
+      authenticatedCourier = candidate;
+      break;
+    }
+  }
+
+  if (!authenticatedCourier) {
+    recordCourierLoginFailure(rateKey);
+    res.status(401).json({ success: false, message: 'رقم الجوال أو كلمة المرور غير صحيحة' });
+    return;
+  }
+
+  courierLoginRateLimit.delete(rateKey);
+  const token = signCourierToken(authenticatedCourier.id);
+
+  res.json({
+    success: true,
+    token,
+    courier: {
+      id: authenticatedCourier.id,
+      name: authenticatedCourier.name,
+      phone: authenticatedCourier.phone,
+      status: authenticatedCourier.status,
+    },
+  });
+});
+
+app.get('/api/courier-portal/dashboard', (req: Request, res: Response) => {
+  const authHeader = String(req.headers.authorization || '');
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  const verified = verifyCourierToken(bearerToken);
+
+  if (!verified) {
+    res.status(401).json({ success: false, message: 'انتهت جلسة الدخول، يرجى تسجيل الدخول مجدداً' });
+    return;
+  }
+
+  const courier = couriers.find((c) => c.id === verified.courierId);
+  if (!courier) {
+    res.status(401).json({ success: false, message: 'الحساب غير موجود' });
+    return;
+  }
+
+  // Combine archived history + live orders (live orders override archived copy by ID)
+  const combinedMap = new Map<string, Order>();
+  for (const hist of orderHistory) {
+    if (hist && hist.id) combinedMap.set(hist.id, hist);
+  }
+  for (const live of orders) {
+    if (live && live.id) combinedMap.set(live.id, live);
+  }
+
+  const allCourierOrders = Array.from(combinedMap.values())
+    .filter((o) => doesOrderBelongToCourier(o, courier))
+    .sort((a, b) => {
+      const tA = new Date(a.createdAt || a.assignedAt || a.lastUpdated || 0).getTime();
+      const tB = new Date(b.createdAt || b.assignedAt || b.lastUpdated || 0).getTime();
+      return tB - tA;
+    });
+
+  const currentMonthKey = getRiyadhMonthKey();
+  const requestedMonth = typeof req.query.month === 'string' && /^\d{4}-\d{2}$/.test(req.query.month)
+    ? req.query.month
+    : currentMonthKey;
+
+  const monthsSet = new Set<string>([currentMonthKey]);
+  allCourierOrders.forEach((o) => {
+    const dk = getOrderRiyadhDateKey(o);
+    if (dk && dk.length >= 7) monthsSet.add(dk.slice(0, 7));
+  });
+  const availableMonths = Array.from(monthsSet).sort((a, b) => b.localeCompare(a));
+
+  const monthlyOrders = allCourierOrders.filter((o) => getOrderRiyadhDateKey(o).startsWith(requestedMonth));
+  const activeOrders = allCourierOrders.filter(
+    (o) => !o.isDelivered && !o.isCanceled && o.status !== 'delivered' && o.status !== 'cancelled'
+  );
+
+  const todayKey = getRiyadhDateKey();
+  const deliveredToday = allCourierOrders.filter(
+    (o) => (o.isDelivered || o.status === 'delivered') && isOrderFromToday(o, todayKey)
+  ).length;
+
+  const deliveredThisMonthOrders = monthlyOrders.filter((o) => o.isDelivered || o.status === 'delivered');
+  const canceledThisMonth = monthlyOrders.filter((o) => o.isCanceled || o.status === 'cancelled').length;
+  const delayedNow = activeOrders.filter((o) => o.isDelayed || o.status === 'delayed').length;
+
+  const completedWithTime = deliveredThisMonthOrders.filter((o) => o.elapsedMinutes > 0);
+  const avgDeliveryMinutesThisMonth =
+    completedWithTime.length > 0
+      ? Math.round(completedWithTime.reduce((sum, o) => sum + o.elapsedMinutes, 0) / completedWithTime.length)
+      : courier.avgDeliveryTimeMinutes || 0;
+
+  const dailyMap = new Map<string, { date: string; total: number; delivered: number }>();
+  monthlyOrders.forEach((o) => {
+    const dk = getOrderRiyadhDateKey(o);
+    const entry = dailyMap.get(dk) || { date: dk, total: 0, delivered: 0 };
+    entry.total += 1;
+    if (o.isDelivered || o.status === 'delivered') {
+      entry.delivered += 1;
+    }
+    dailyMap.set(dk, entry);
+  });
+  const dailyBreakdown = Array.from(dailyMap.values()).sort((a, b) => b.date.localeCompare(a.date));
+
+  res.json({
+    success: true,
+    dashboard: {
+      courier: {
+        id: courier.id,
+        name: courier.name,
+        phone: courier.phone,
+        status: courier.status,
+        locatAccounts: courier.locatAccounts,
+        activeOrdersCount: activeOrders.length,
+        totalDeliveredToday: deliveredToday,
+        avgDeliveryTimeMinutes: courier.avgDeliveryTimeMinutes,
+        idNumber: courier.idNumber,
+        cityId: courier.cityId,
+        gift: courier.gift,
+        balance: courier.balance,
+      },
+      monthKey: requestedMonth,
+      monthLabel: formatMonthLabelArabic(requestedMonth),
+      availableMonths,
+      summary: {
+        activeNow: activeOrders.length,
+        delayedNow,
+        deliveredToday,
+        deliveredThisMonth: deliveredThisMonthOrders.length,
+        totalOrdersThisMonth: monthlyOrders.length,
+        canceledThisMonth,
+        avgDeliveryMinutesThisMonth,
+      },
+      dailyBreakdown,
+      activeOrders,
+      monthlyOrders,
+    },
+  });
 });
 
 // Dedicated quick inline phone update & lock
@@ -1732,6 +2180,7 @@ app.post('/api/couriers/restore-custom', (req: Request, res: Response) => {
 app.delete('/api/couriers/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   couriers = couriers.filter((c) => c.id !== id);
+  delete courierPortalAuth[id];
   saveStoreToDisk();
   res.json({ success: true, message: 'تم حذف المندوب بنجاح' });
 });
@@ -1844,6 +2293,7 @@ function ingestLiveOrders(liveOrders: any[], sourceName: string = 'Locat'): { co
     }).length;
   });
 
+  upsertOrderHistory(orders);
   saveStoreToDisk();
   return { count: liveOrders.length, alertsGenerated, newlyDelayedCount };
 }
@@ -2569,10 +3019,10 @@ async function executeLocatCloudSync(): Promise<{ success: boolean; count: numbe
       }
     });
 
-    // 2. Fetch Orders from Locate (Support multi-page up to recent orders)
+    // 2. Fetch Orders from Locate (Support multi-page up to recent orders, deeper initial backfill for monthly stats)
     let rawList: any[] = [];
     let orderPage = 1;
-    const maxOrderPages = 3; // 300 most recent orders
+    const maxOrderPages = orderHistory.length < 300 ? 6 : 3;
 
     while (orderPage <= maxOrderPages) {
       const ordersUrl = `https://api.supplier.locate.sa/api/v2/orders?page=${orderPage}&limit=100`;
@@ -2772,8 +3222,9 @@ async function executeLocatCloudSync(): Promise<{ success: boolean; count: numbe
       syncedOrders.push(orderRecord);
     });
 
-    // Replace orders with strictly synchronized Locate dataset
+    // Replace live orders with strictly synchronized Locate dataset & archive into monthly history
     orders = syncedOrders;
+    upsertOrderHistory(syncedOrders);
 
     // Ensure orders are strictly sorted by creation time descending (newest on top, exactly like Locate)
     orders.sort((a, b) => {

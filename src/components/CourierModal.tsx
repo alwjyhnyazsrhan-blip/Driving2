@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, 
-  User, 
-  Phone, 
-  Tag, 
-  FileText, 
-  Plus, 
-  Trash2, 
   Save, 
-  UserCheck 
+  UserCheck,
+  KeyRound,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  AlertCircle
 } from 'lucide-react';
 import { Courier } from '../types';
 
@@ -30,8 +29,16 @@ export const CourierModal: React.FC<CourierModalProps> = ({
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'active' | 'idle' | 'off_duty'>('active');
   const [notes, setNotes] = useState('');
+  const [portalPassword, setPortalPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [clearPortalPassword, setClearPortalPassword] = useState(false);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
+    setFormError('');
+    setShowPassword(false);
+    setClearPortalPassword(false);
+    setPortalPassword('');
     if (courierToEdit) {
       setName(courierToEdit.name);
       setAccountsInput(courierToEdit.locatAccounts.join(', '));
@@ -51,8 +58,16 @@ export const CourierModal: React.FC<CourierModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
     if (!name.trim() || !phone.trim()) {
-      alert('يرجى إدخال اسم المندوب ورقم الواتساب');
+      setFormError('يرجى إدخال اسم المندوب ورقم الواتساب');
+      return;
+    }
+
+    const trimmedPass = portalPassword.trim();
+    if (trimmedPass && trimmedPass.length < 4) {
+      setFormError('كلمة مرور بوابة المندوب يجب أن لا تقل عن 4 أحرف أو أرقام');
       return;
     }
 
@@ -68,6 +83,8 @@ export const CourierModal: React.FC<CourierModalProps> = ({
       phone: phone.trim(),
       status,
       notes: notes.trim(),
+      ...(trimmedPass ? { portalPassword: trimmedPass } : {}),
+      ...(clearPortalPassword && !trimmedPass ? { clearPortalPassword: true } : {}),
     });
 
     onClose();
@@ -87,7 +104,7 @@ export const CourierModal: React.FC<CourierModalProps> = ({
                 {courierToEdit ? 'تعديل بيانات المندوب وحساباته' : 'إضافة مندوب جديد إلى لوكيت'}
               </h2>
               <p className="text-xs text-slate-500">
-                ربط حسابات لوكيت المتعددة برقم الواتساب الفعلي للمندوب
+                ربط حسابات لوكيت المتعددة برقم الواتساب وكلمة مرور بوابة المندوب
               </p>
             </div>
           </div>
@@ -101,6 +118,13 @@ export const CourierModal: React.FC<CourierModalProps> = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+          {formError && (
+            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 flex items-center gap-2 font-semibold">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{formError}</span>
+            </div>
+          )}
+
           {/* Name */}
           <div>
             <label className="block font-bold text-slate-700 mb-1">
@@ -140,7 +164,7 @@ export const CourierModal: React.FC<CourierModalProps> = ({
           {/* WhatsApp Phone */}
           <div>
             <label className="block font-bold text-slate-700 mb-1">
-              رقم الواتساب الفعلي للتواصل (مع الرمز الدولي):
+              رقم الواتساب / الجوال (يستخدم أيضاً لتسجيل دخول المندوب):
             </label>
             <input
               type="text"
@@ -154,6 +178,67 @@ export const CourierModal: React.FC<CourierModalProps> = ({
             <span className="text-[10px] text-slate-500 mt-0.5 block">
               يجب أن يبدأ بالرمز الدولي، مثل: +966 أو 00966
             </span>
+          </div>
+
+          {/* Portal Password */}
+          <div className="bg-indigo-50/70 p-3.5 rounded-xl border border-indigo-200 space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <label className="font-bold text-indigo-950 flex items-center gap-1.5">
+                <KeyRound className="w-3.5 h-3.5 text-indigo-600" />
+                <span>كلمة مرور بوابة المندوب (لمتابعة طلباته وإنجازه الشهري):</span>
+              </label>
+              {courierToEdit?.hasPortalPassword && !clearPortalPassword && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                  <ShieldCheck className="w-3 h-3" />
+                  مفعّلة
+                </span>
+              )}
+            </div>
+
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={portalPassword}
+                onChange={(e) => {
+                  setPortalPassword(e.target.value);
+                  if (e.target.value.trim()) setClearPortalPassword(false);
+                }}
+                placeholder={
+                  courierToEdit?.hasPortalPassword && !clearPortalPassword
+                    ? 'اتركه فارغاً للإبقاء على كلمة المرور الحالية، أو أدخل كلمة جديدة للتغيير'
+                    : 'أدخل كلمة مرور (4 أحرف أو أرقام على الأقل)'
+                }
+                className="w-full font-mono text-xs px-3 py-2 pl-9 bg-white border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-left"
+                dir="ltr"
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                title={showPassword ? 'إخفاء' : 'إظهار'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between gap-2 text-[10px] text-indigo-700">
+              <span>يستطيع المندوب الدخول عبر رابطه الخاص باستخدام رقم جواله وهذه الكلمة.</span>
+              {courierToEdit?.hasPortalPassword && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClearPortalPassword((prev) => !prev);
+                    if (!clearPortalPassword) setPortalPassword('');
+                  }}
+                  className={`font-bold underline shrink-0 ${
+                    clearPortalPassword ? 'text-rose-700' : 'text-slate-500 hover:text-rose-600'
+                  }`}
+                >
+                  {clearPortalPassword ? 'التراجع عن الإزالة' : 'إلغاء كلمة المرور'}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Status */}
